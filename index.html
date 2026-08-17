@@ -1,0 +1,6460 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Spirit box</title>
+
+    <style>
+        /* =========================================================
+   BASE / RESET
+   ========================================================= */
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+
+            font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+            font-size: 13px;
+
+            color: #000;
+            background: #d9d9d9;
+
+            -webkit-text-size-adjust: 100%;
+        }
+
+        a {
+            color: #06c;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: checkbox;
+        }
+
+
+        /* =========================================================
+   APP SHELL
+   ========================================================= */
+
+        #app {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            max-width: 760px;
+            margin: 0 auto;
+
+            background: #fff;
+
+            border-left: 1px solid #999;
+            border-right: 1px solid #999;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+   HEADER
+   ========================================================= */
+
+        #header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 40px;
+
+            border-bottom: 1px solid #777;
+
+            background-color: #e5e5e5;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#f8f8f8),
+                    color-stop(48%, #e7e7e7),
+                    color-stop(52%, #d9d9d9),
+                    to(#c7c7c7));
+
+            background: -webkit-linear-gradient(top,
+                    #f8f8f8,
+                    #e7e7e7 48%,
+                    #d9d9d9 52%,
+                    #c7c7c7);
+
+            background: linear-gradient(to bottom,
+                    #f8f8f8,
+                    #e7e7e7 48%,
+                    #d9d9d9 52%,
+                    #c7c7c7);
+        }
+
+        #backBtn {
+            display: none;
+
+            position: absolute;
+            left: 8px;
+            top: 7px;
+        }
+
+        #header .title {
+            display: block;
+
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 40px;
+
+            padding: 0 90px;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        #header .actions {
+            position: absolute;
+            right: 8px;
+            top: 7px;
+        }
+
+        #header .actions label {
+            font-size: 11px;
+            vertical-align: middle;
+        }
+
+
+        /* =========================================================
+   PAGES
+   ========================================================= */
+
+        .page {
+            position: absolute;
+
+            top: 40px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            padding: 16px 14px;
+
+            overflow: auto;
+
+            background: #fff;
+        }
+
+        .page h2 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .page p {
+            font-size: 11px;
+            color: #555;
+        }
+
+
+        /* =========================================================
+   FORMS
+   ========================================================= */
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            color: #000;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            -webkit-appearance: textfield;
+
+            width: 100%;
+            max-width: 280px;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================================================
+   CHAT
+   ========================================================= */
+
+        #chat {
+            display: none;
+
+            position: absolute;
+
+            top: 40px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+
+        /* =========================================================
+   CONVERSATION LIST
+   ========================================================= */
+
+        #list {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: 220px;
+
+            border-right: 1px solid #aaa;
+
+            background: #eef0f3;
+
+            overflow: auto;
+        }
+
+        .listhead {
+            padding: 6px 12px;
+
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+
+            color: #7a7a7a;
+
+            text-shadow: 0 1px 0 #fff;
+
+            border-bottom: 1px solid #cdcfd3;
+
+            background: #dfe2e6;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#e9ebef),
+                    to(#d7dade));
+
+            background: -webkit-linear-gradient(top,
+                    #e9ebef,
+                    #d7dade);
+
+            background: linear-gradient(to bottom,
+                    #e9ebef,
+                    #d7dade);
+        }
+
+        .conv {
+            padding: 9px 12px;
+
+            border-bottom: 1px solid #dcdee2;
+
+            cursor: pointer;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .conv:hover {
+            background: #e4e7eb;
+        }
+
+        .conv.active {
+            color: #fff;
+
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+            background: #3d80e0;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#5e9bf0),
+                    to(#2f6fd6));
+
+            background: -webkit-linear-gradient(top,
+                    #5e9bf0,
+                    #2f6fd6);
+
+            background: linear-gradient(to bottom,
+                    #5e9bf0,
+                    #2f6fd6);
+        }
+
+        .conv .sub {
+            display: block;
+
+            font-size: 10px;
+            color: #999;
+
+            text-shadow: none;
+        }
+
+        .conv.active .sub {
+            color: #d8e6ff;
+        }
+
+        .addfriend {
+            padding: 10px 12px;
+
+            border-top: 1px solid #cdcfd3;
+
+            background: #e4e6ea;
+        }
+
+        .addfriend input {
+            width: 100%;
+            max-width: none;
+
+            margin-bottom: 6px;
+        }
+
+
+        /* =========================================================
+   THREAD
+   ========================================================= */
+
+        #thread {
+            position: absolute;
+
+            top: 0;
+            left: 220px;
+            right: 0;
+            bottom: 0;
+        }
+
+
+        /* =========================================================
+   MESSAGES
+   ========================================================= */
+
+        #messages {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 84px;
+
+            overflow: auto;
+
+            -webkit-overflow-scrolling: touch;
+
+            padding: 8px 10px;
+
+            background: #f7f7f7;
+        }
+
+
+        /* =========================================================
+   COMPOSER
+   ========================================================= */
+
+        #composer {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 84px;
+
+            padding: 8px 10px;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            border-top: 1px solid #fff;
+
+            background: #e9e9e9;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#f2f2f2),
+                    to(#dcdcdc));
+
+            background: -webkit-linear-gradient(top,
+                    #f2f2f2,
+                    #dcdcdc);
+
+            background: linear-gradient(to bottom,
+                    #f2f2f2,
+                    #dcdcdc);
+
+            -webkit-box-shadow:
+                inset 0 1px 0 #fff,
+                0 -1px 2px rgba(0, 0, 0, 0.12);
+
+            box-shadow:
+                inset 0 1px 0 #fff,
+                0 -1px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        #composer #message {
+            -webkit-appearance: textfield;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            width: 100%;
+
+            font-size: 13px;
+
+            margin-bottom: 6px;
+        }
+
+
+        /* =========================================================
+   MESSAGE ROWS
+   ========================================================= */
+
+        .row {
+            margin: 7px 0;
+
+            clear: both;
+
+            width: 100%;
+
+            overflow: hidden;
+        }
+
+        .row.right {
+            text-align: right;
+        }
+
+        .row.left {
+            text-align: left;
+        }
+
+        .name {
+            font-size: 11px;
+
+            color: #888;
+
+            margin: 0 4px 1px 4px;
+
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .messageLine {
+            display: inline-block;
+
+            max-width: 90%;
+
+            vertical-align: bottom;
+        }
+
+        .profileButton {
+            display: inline-block;
+
+            vertical-align: bottom;
+
+            width: 36px;
+            height: 36px;
+
+            padding: 0;
+
+            margin: 0 7px 2px 0;
+
+            border: 0;
+
+            background: transparent;
+
+            cursor: pointer;
+        }
+
+        .row.right .profileButton {
+            margin: 0 0 2px 7px;
+        }
+
+        .profileButton img,
+        .avatarFallback {
+            display: block;
+
+            width: 32px;
+            height: 32px;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(0, 0, 0, 0.25);
+
+            object-fit: cover;
+
+            background: #ddd;
+        }
+
+        .avatarFallback {
+            line-height: 30px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            color: #555;
+
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .messageContent {
+            display: inline-block;
+
+            vertical-align: bottom;
+
+            max-width: calc(100% - 45px);
+
+            text-align: left;
+        }
+
+        .row.right .messageContent {
+            text-align: right;
+        }
+        .profileBio {
+            position: relative;
+
+            margin: 8px 0;
+
+            width: 100%;
+
+            overflow: hidden;
+
+            word-wrap: break-word;
+        }
+
+
+        /* =========================================================
+   SKEUO MESSAGE BUBBLES
+   ========================================================= */
+
+        .bubble {
+            display: inline-block;
+
+            max-width: 78%;
+
+            padding: 6px 10px;
+
+            text-align: left;
+
+            line-height: 18px;
+
+            white-space: pre-wrap;
+            word-wrap: break-word;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(0, 0, 0, 0.18);
+
+            -webkit-box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.65),
+                0 1px 2px rgba(0, 0, 0, 0.18);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.65),
+                0 1px 2px rgba(0, 0, 0, 0.18);
+        }
+
+        .bubble.left {
+            color: #000;
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.8);
+
+            background: #e7e7e7;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#fafafa),
+                    color-stop(48%, #e9e9e9),
+                    to(#d5d5d5));
+
+            background: -webkit-linear-gradient(top,
+                    #fafafa,
+                    #e9e9e9 48%,
+                    #d5d5d5);
+
+            background: linear-gradient(to bottom,
+                    #fafafa,
+                    #e9e9e9 48%,
+                    #d5d5d5);
+        }
+
+        .bubble.right {
+            color: #fff;
+
+            border-color: #1766b5;
+
+            text-shadow:
+                0 -1px 0 rgba(0, 0, 0, 0.25);
+
+            background: #3d8fe8;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#6fb4f5),
+                    color-stop(48%, #398fe8),
+                    to(#1975d1));
+
+            background: -webkit-linear-gradient(top,
+                    #6fb4f5,
+                    #398fe8 48%,
+                    #1975d1);
+
+            background: linear-gradient(to bottom,
+                    #6fb4f5,
+                    #398fe8 48%,
+                    #1975d1);
+        }
+
+
+        /* =========================================================
+   PROFILE CARD
+   ========================================================= */
+
+        .profileCard {
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            width: 360px;
+            max-width: 90%;
+            max-height: 90%;
+
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            z-index: 1000;
+
+            background: #f2f2f2;
+
+            border: 1px solid #777;
+
+            border-radius: 8px;
+
+            -webkit-box-shadow:
+                0 4px 18px rgba(0, 0, 0, 0.35);
+
+            box-shadow:
+                0 4px 18px rgba(0, 0, 0, 0.35);
+
+            overflow: hidden;
+        }
+
+        .profileBanner {
+            position: relative;
+
+            width: 100%;
+            height: 120px;
+
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            background-color: #d5d5d5;
+        }
+
+        .profileBody {
+            position: relative;
+
+            text-align: left;
+
+            min-height: 150px;
+
+            padding: 58px 20px 20px 20px;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            background: transparent;
+
+            z-index: 1;
+        }
+
+        .profileBody .profileAvatar,
+        .profileAvatar {
+            position: absolute;
+
+            left: 20px;
+            top: -50px;
+
+            width: 96px;
+            height: 96px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #ddd;
+
+            border: 5px solid #fff;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            -webkit-box-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.35);
+
+            box-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.35);
+
+            z-index: 10;
+        }
+
+        .profileBody h2 {
+            margin: 0 0 4px 0;
+
+            font-size: 18px;
+            line-height: 22px;
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.65);
+        }
+
+        .profileBody p {
+            margin: 4px 0;
+
+            line-height: 17px;
+        }
+
+        .profileCard.profileColored .profileBody {
+            background: transparent;
+        }
+
+
+        /* =========================================================
+   SETTINGS
+   ========================================================= */
+
+        .settingsPanel {
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            width: 360px;
+            max-width: 90%;
+            max-height: 90%;
+
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            z-index: 1000;
+
+            background: #f2f2f2;
+
+            border: 1px solid #777;
+
+            -webkit-box-shadow:
+                0 4px 18px rgba(0, 0, 0, 0.35);
+
+            box-shadow:
+                0 4px 18px rgba(0, 0, 0, 0.35);
+
+            padding: 12px;
+
+            overflow: auto;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .settingsPanel label {
+            display: block;
+
+            margin: 8px 0;
+        }
+
+        .settingsPanel input,
+        .settingsPanel textarea,
+        .settingsPanel select {
+            max-width: 100%;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .settingsProfileUploads {
+            margin-top: 14px;
+
+            padding-top: 10px;
+
+            border-top: 1px solid #bbb;
+        }
+
+        .settingsSectionTitle {
+            font-weight: bold;
+
+            margin: 10px 0 5px 0;
+
+            text-shadow:
+                0 1px 0 #fff;
+        }
+
+        .settingsUploadRow {
+            margin-bottom: 4px;
+        }
+
+        .settingsUploadRow input[type="file"] {
+            width: 100%;
+            max-width: 100%;
+
+            margin-bottom: 6px;
+        }
+
+        .settingsUploadRow button {
+            margin-right: 5px;
+        }
+
+        .settingsUploadStatus {
+            min-height: 16px;
+
+            margin-bottom: 8px;
+
+            font-size: 11px;
+
+            color: #666;
+        }
+
+
+        /* =========================================================
+   TYPING
+   ========================================================= */
+
+        #typingIndicator {
+            height: 18px;
+
+            padding-left: 10px;
+
+            font-size: 11px;
+            line-height: 18px;
+
+            opacity: 0.55;
+
+            color: #555;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+   =========================================================
+   THEME: LIGHT SKEUO
+   =========================================================
+   ========================================================= */
+
+        html.theme-light-skeuo {
+            background: #d9d9d9;
+            color: #000;
+        }
+
+
+        /* =========================================================
+   THEME: DARK SKEUO
+   ========================================================= */
+
+        html.theme-dark-skeuo,
+        html.theme-dark-skeuo body {
+            background: #101114;
+            color: #f4f4f4;
+        }
+
+        html.theme-dark-skeuo #app {
+            background: #17191c;
+            border-color: #30343a;
+        }
+
+        html.theme-dark-skeuo #header {
+            color: #fff;
+
+            border-color: #090a0c;
+
+            background: #292c30;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#3b3e43),
+                    color-stop(48%, #2d3034),
+                    color-stop(52%, #22252a),
+                    to(#181a1e));
+
+            background: -webkit-linear-gradient(top,
+                    #3b3e43,
+                    #2d3034 48%,
+                    #22252a 52%,
+                    #181a1e);
+
+            background: linear-gradient(to bottom,
+                    #3b3e43,
+                    #2d3034 48%,
+                    #22252a 52%,
+                    #181a1e);
+        }
+
+        html.theme-dark-skeuo #header .title {
+            color: #fff;
+            text-shadow: 0 -1px 0 #000;
+        }
+
+        html.theme-dark-skeuo #header button {
+            color: #fff;
+            background: #30343a;
+            border-color: #111317;
+        }
+
+        html.theme-dark-skeuo .page {
+            background: #17191c;
+            color: #f4f4f4;
+        }
+
+        html.theme-dark-skeuo .page h2 {
+            color: #fff;
+            text-shadow: 0 -1px 0 #000;
+        }
+
+        html.theme-dark-skeuo .page p {
+            color: #bfc3c8;
+        }
+
+        html.theme-dark-skeuo #list {
+            background: #1c1f23;
+            border-color: #090a0c;
+        }
+
+        html.theme-dark-skeuo .listhead {
+            color: #bfc3c8;
+            text-shadow: 0 -1px 0 #000;
+
+            border-color: #0c0e11;
+
+            background: #292c31;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#34373c),
+                    to(#23262a));
+
+            background: -webkit-linear-gradient(top,
+                    #34373c,
+                    #23262a);
+
+            background: linear-gradient(to bottom,
+                    #34373c,
+                    #23262a);
+        }
+
+        html.theme-dark-skeuo .conv {
+            background: #1c1f23;
+
+            color: #eee;
+
+            border-color: #0d0f12;
+
+            text-shadow: 0 -1px 0 #000;
+        }
+
+        html.theme-dark-skeuo .conv:hover {
+            background: #292d32;
+        }
+
+        html.theme-dark-skeuo .conv .sub {
+            color: #8f969e;
+        }
+
+        html.theme-dark-skeuo .conv.active {
+            color: #fff;
+
+            background: #285d9d;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#397ac2),
+                    to(#204e8a));
+
+            background: -webkit-linear-gradient(top,
+                    #397ac2,
+                    #204e8a);
+
+            background: linear-gradient(to bottom,
+                    #397ac2,
+                    #204e8a);
+        }
+
+        html.theme-dark-skeuo .addfriend {
+            background: #202328;
+            border-color: #0b0d10;
+        }
+
+        html.theme-dark-skeuo #thread {
+            background: #111316;
+        }
+
+        html.theme-dark-skeuo #messages {
+            background: #111316;
+        }
+
+        html.theme-dark-skeuo #composer {
+            background: #202328;
+
+            border-color: #08090b;
+
+            -webkit-box-shadow:
+                inset 0 1px 0 #34383d,
+                0 -1px 2px rgba(0, 0, 0, 0.5);
+
+            box-shadow:
+                inset 0 1px 0 #34383d,
+                0 -1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        html.theme-dark-skeuo input,
+        html.theme-dark-skeuo textarea,
+        html.theme-dark-skeuo select {
+            background: #24272b;
+            color: #fff;
+            border-color: #090b0e;
+        }
+
+        html.theme-dark-skeuo input::placeholder,
+        html.theme-dark-skeuo textarea::placeholder {
+            color: #888;
+        }
+
+        html.theme-dark-skeuo button {
+            background: #292d32;
+            color: #fff;
+            border-color: #0c0e11;
+        }
+
+        html.theme-dark-skeuo button:hover {
+            background: #343941;
+        }
+
+
+        /* DARK SKEUO INCOMING BUBBLE */
+
+        html.theme-dark-skeuo .bubble.left {
+            color: #fff;
+
+            text-shadow:
+                0 -1px 0 rgba(0, 0, 0, 0.7);
+
+            border-color: #090b0e;
+
+            background: #363a40;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#474c53),
+                    color-stop(48%, #3b4047),
+                    to(#2b2f35));
+
+            background: -webkit-linear-gradient(top,
+                    #474c53,
+                    #3b4047 48%,
+                    #2b2f35);
+
+            background: linear-gradient(to bottom,
+                    #474c53,
+                    #3b4047 48%,
+                    #2b2f35);
+
+            -webkit-box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.55);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.55);
+        }
+
+
+        /* BLUE OUTGOING BUBBLE STAYS BLUE */
+
+        html.theme-dark-skeuo .bubble.right {
+            color: #fff;
+        }
+
+
+        /* DARK SKEUO PROFILES */
+
+        html.theme-dark-skeuo .profileCard,
+        html.theme-dark-skeuo .settingsPanel {
+            background: #202328;
+            color: #fff;
+
+            border-color: #080a0d;
+
+            -webkit-box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.65);
+
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.65);
+        }
+
+        html.theme-dark-skeuo .profileBody h2,
+        html.theme-dark-skeuo .settingsPanel h2,
+        html.theme-dark-skeuo .settingsPanel h3 {
+            color: #fff;
+            text-shadow: 0 -1px 0 #000;
+        }
+
+        html.theme-dark-skeuo .profileBody p,
+        html.theme-dark-skeuo .settingsPanel label,
+        html.theme-dark-skeuo .settingsPanel strong {
+            color: #ddd;
+        }
+
+        html.theme-dark-skeuo .profileAvatar {
+            border-color: #202328;
+        }
+
+        html.theme-dark-skeuo .settingsProfileUploads {
+            border-color: #3a3e44;
+        }
+
+        html.theme-dark-skeuo .settingsSectionTitle {
+            color: #fff;
+            text-shadow: 0 -1px 0 #000;
+        }
+
+        html.theme-dark-skeuo #typingIndicator {
+            color: #aaa;
+        }
+
+
+        /* =========================================================
+   THEME: LIGHT BASIC
+   ========================================================= */
+
+        html.theme-light-basic,
+        html.theme-light-basic body {
+            background: #f4f4f4;
+            color: #111;
+        }
+
+        html.theme-light-basic #app {
+            background: #fff;
+            border-color: #ccc;
+        }
+
+        html.theme-light-basic #header,
+        html.theme-light-basic #composer {
+            background: #eee;
+            border-color: #ccc;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-light-basic #list {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        html.theme-light-basic .listhead {
+            background: #e9e9e9;
+            border-color: #ccc;
+            text-shadow: none;
+        }
+
+        html.theme-light-basic .conv {
+            background: #f5f5f5;
+            border-color: #ddd;
+            text-shadow: none;
+        }
+
+        html.theme-light-basic .conv:hover {
+            background: #e8e8e8;
+        }
+
+        html.theme-light-basic #messages,
+        html.theme-light-basic #thread {
+            background: #fff;
+        }
+
+        html.theme-light-basic .bubble.left {
+            background: #e6e6e6;
+            color: #111;
+            text-shadow: none;
+            border-color: #ccc;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-light-basic .bubble.right {
+            background: #398fe8;
+            color: #fff;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+
+        /* =========================================================
+   THEME: DARK BASIC
+   ========================================================= */
+
+        html.theme-dark-basic,
+        html.theme-dark-basic body {
+            background: #080808;
+            color: #eee;
+        }
+
+        html.theme-dark-basic #app {
+            background: #111;
+            border-color: #222;
+        }
+
+        html.theme-dark-basic #header {
+            background: #171717;
+            color: #fff;
+            border-color: #282828;
+        }
+
+        html.theme-dark-basic #header .title {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        html.theme-dark-basic .page {
+            background: #111;
+            color: #eee;
+        }
+
+        html.theme-dark-basic #list {
+            background: #151515;
+            border-color: #292929;
+        }
+
+        html.theme-dark-basic .listhead {
+            background: #1c1c1c;
+            color: #bbb;
+            border-color: #292929;
+            text-shadow: none;
+        }
+
+        html.theme-dark-basic .conv {
+            background: #151515;
+            color: #eee;
+            border-color: #252525;
+            text-shadow: none;
+        }
+
+        html.theme-dark-basic .conv:hover {
+            background: #222;
+        }
+
+        html.theme-dark-basic .conv.active {
+            background: #315f96;
+            color: #fff;
+        }
+
+        html.theme-dark-basic .addfriend {
+            background: #151515;
+            border-color: #292929;
+        }
+
+        html.theme-dark-basic #thread,
+        html.theme-dark-basic #messages {
+            background: #0f0f0f;
+        }
+
+        html.theme-dark-basic #composer {
+            background: #171717;
+            border-color: #292929;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-dark-basic input,
+        html.theme-dark-basic textarea,
+        html.theme-dark-basic select {
+            background: #1c1c1c;
+            color: #fff;
+            border-color: #333;
+        }
+
+        html.theme-dark-basic button {
+            background: #222;
+            color: #fff;
+            border-color: #333;
+        }
+
+        html.theme-dark-basic .bubble.left {
+            background: #292929 !important;
+            color: #fff !important;
+            border-color: #3a3a3a !important;
+            text-shadow: none;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-dark-basic .bubble.right {
+            background: #398fe8;
+            color: #fff;
+            border-color: #1766b5;
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-dark-basic .profileCard,
+        html.theme-dark-basic .settingsPanel {
+            background: #181818;
+            color: #fff;
+            border-color: #333;
+        }
+
+        html.theme-dark-basic .profileBody h2,
+        html.theme-dark-basic .settingsPanel h2,
+        html.theme-dark-basic .settingsPanel h3 {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        html.theme-dark-basic .settingsProfileUploads {
+            border-color: #333;
+        }
+
+        html.theme-dark-basic #typingIndicator {
+            color: #aaa;
+        }
+
+
+        /* =========================================================
+   MODERN THEMES
+   ========================================================= */
+
+        html.theme-modern-light,
+        html.theme-modern-dark,
+        html.theme-pink-skeuo {
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+
+        /* =========================================================
+   MODERN LIGHT
+   ========================================================= */
+
+        html.theme-modern-light,
+        html.theme-modern-light body {
+            background-color: #dfe7f1;
+            color: #111;
+        }
+
+        html.theme-modern-light #app {
+            background: rgba(255, 255, 255, 0.48);
+
+            border: 1px solid rgba(255, 255, 255, 0.55);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+
+            -webkit-box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.20);
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.20);
+        }
+
+        html.theme-modern-light #header {
+            background: rgba(255, 255, 255, 0.52);
+
+            border-color: rgba(255, 255, 255, 0.55);
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-modern-light #header .title {
+            color: #111;
+            text-shadow: none;
+        }
+
+        html.theme-modern-light #list {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        html.theme-modern-light .listhead {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.35);
+            text-shadow: none;
+        }
+
+        html.theme-modern-light .conv {
+            background: transparent;
+            border-color: rgba(0, 0, 0, 0.08);
+            text-shadow: none;
+        }
+
+        html.theme-modern-light .conv:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        html.theme-modern-light #thread {
+            background: transparent;
+        }
+
+        html.theme-modern-light #messages {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        html.theme-modern-light #composer {
+            background: rgba(255, 255, 255, 0.42);
+            border-color: rgba(255, 255, 255, 0.45);
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-modern-light input,
+        html.theme-modern-light textarea,
+        html.theme-modern-light select {
+            background: rgba(255, 255, 255, 0.62);
+
+            color: #111;
+
+            border: 1px solid rgba(0, 0, 0, 0.12);
+
+            border-radius: 12px;
+        }
+
+        html.theme-modern-light .bubble {
+            border-radius: 18px;
+
+            -webkit-box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.10);
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.10);
+        }
+
+        html.theme-modern-light .bubble.left {
+            color: #222;
+
+            background: rgba(255, 255, 255, 0.62);
+
+            border-color: rgba(255, 255, 255, 0.65);
+
+            text-shadow: none;
+
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+
+            -webkit-box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.10);
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.10);
+        }
+
+        html.theme-modern-light .bubble.right {
+            color: #fff;
+
+            background: rgba(45, 130, 230, 0.88);
+
+            border-color: rgba(20, 90, 170, 0.65);
+
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =========================================================
+   MODERN DARK
+   ========================================================= */
+
+        html.theme-modern-dark,
+        html.theme-modern-dark body {
+            background-color: #090b10;
+            color: #f5f5f5;
+        }
+
+        html.theme-modern-dark #app {
+            background: rgba(15, 17, 22, 0.58);
+
+            border: 1px solid rgba(255, 255, 255, 0.10);
+
+            border-radius: 18px;
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+
+            -webkit-box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.55);
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.55);
+        }
+
+        html.theme-modern-dark #header {
+            background: rgba(20, 22, 28, 0.65);
+
+            border-color: rgba(255, 255, 255, 0.10);
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+        }
+
+        html.theme-modern-dark #header .title {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        html.theme-modern-dark #list {
+            background: rgba(10, 12, 16, 0.42);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        html.theme-modern-dark .listhead {
+            background: rgba(255, 255, 255, 0.05);
+            color: #aaa;
+            border-color: rgba(255, 255, 255, 0.08);
+            text-shadow: none;
+        }
+
+        html.theme-modern-dark .conv {
+            background: transparent;
+            color: #eee;
+            border-color: rgba(255, 255, 255, 0.06);
+            text-shadow: none;
+        }
+
+        html.theme-modern-dark .conv:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        html.theme-modern-dark #thread {
+            background: transparent;
+        }
+
+        html.theme-modern-dark #messages {
+            background: rgba(0, 0, 0, 0.16);
+        }
+
+        html.theme-modern-dark #composer {
+            background: rgba(15, 17, 22, 0.65);
+
+            border-color: rgba(255, 255, 255, 0.08);
+
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        html.theme-modern-dark input,
+        html.theme-modern-dark textarea,
+        html.theme-modern-dark select {
+            background: rgba(255, 255, 255, 0.08);
+
+            color: #fff;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 12px;
+        }
+
+        html.theme-modern-dark input::placeholder,
+        html.theme-modern-dark textarea::placeholder {
+            color: #888;
+        }
+
+        html.theme-modern-dark button {
+            background: rgba(255, 255, 255, 0.09);
+
+            color: #fff;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 10px;
+        }
+
+        html.theme-modern-dark .bubble {
+            border-radius: 18px;
+
+            -webkit-box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.30);
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.30);
+        }
+
+        html.theme-modern-dark .bubble.left {
+            color: #fff;
+
+            background: rgba(70, 74, 82, 0.72);
+
+            border-color: rgba(255, 255, 255, 0.10);
+
+            text-shadow: none;
+
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+        }
+
+        html.theme-modern-dark .bubble.right {
+            color: #fff;
+
+            background: rgba(45, 130, 230, 0.88);
+
+            border-color: rgba(20, 90, 170, 0.65);
+        }
+
+
+        /* =========================================================
+   PINK SKEUO
+   ========================================================= */
+
+        html.theme-pink-skeuo,
+        html.theme-pink-skeuo body {
+            background: #f5d8e8;
+            color: #3a1829;
+        }
+
+        html.theme-pink-skeuo #app {
+            background: rgba(255, 245, 250, 0.72);
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            border-radius: 16px;
+
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+
+            -webkit-box-shadow:
+                0 15px 40px rgba(110, 35, 75, 0.25);
+
+            box-shadow:
+                0 15px 40px rgba(110, 35, 75, 0.25);
+        }
+
+        html.theme-pink-skeuo #header {
+            color: #5c2341;
+
+            border-color: #d48aaa;
+
+            background: #f5b9d0;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#ffe4ef),
+                    color-stop(48%, #f8c4da),
+                    to(#dc8eaf));
+
+            background: -webkit-linear-gradient(top,
+                    #ffe4ef,
+                    #f8c4da 48%,
+                    #dc8eaf);
+
+            background: linear-gradient(to bottom,
+                    #ffe4ef,
+                    #f8c4da 48%,
+                    #dc8eaf);
+        }
+
+        html.theme-pink-skeuo #list {
+            background: rgba(255, 240, 247, 0.65);
+            border-color: #dda1ba;
+        }
+
+        html.theme-pink-skeuo .listhead {
+            background: rgba(255, 220, 235, 0.75);
+            border-color: #dda1ba;
+            color: #7d4760;
+        }
+
+        html.theme-pink-skeuo .conv {
+            border-color: rgba(180, 90, 125, 0.18);
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        html.theme-pink-skeuo .conv:hover {
+            background: rgba(255, 210, 230, 0.55);
+        }
+
+        html.theme-pink-skeuo #messages {
+            background: rgba(255, 240, 247, 0.42);
+        }
+
+        html.theme-pink-skeuo #composer {
+            background: rgba(255, 225, 238, 0.75);
+            border-color: #dda1ba;
+
+            -webkit-box-shadow:
+                inset 0 1px 0 #fff;
+
+            box-shadow:
+                inset 0 1px 0 #fff;
+        }
+
+        html.theme-pink-skeuo .bubble.left {
+            color: #432333;
+
+            background: #f4dce7;
+
+            background: -webkit-gradient(linear,
+                    left top,
+                    left bottom,
+                    from(#fff1f6),
+                    to(#e5b8cb));
+
+            background: -webkit-linear-gradient(top,
+                    #fff1f6,
+                    #e5b8cb);
+
+            background: linear-gradient(to bottom,
+                    #fff1f6,
+                    #e5b8cb);
+
+            border-color: #d39ab2;
+        }
+
+        html.theme-pink-skeuo .bubble.right {
+            color: #fff;
+
+            background: #398fe8;
+        }
+
+
+        /* =========================================================
+   MODERN CUSTOM BACKGROUND
+   ========================================================= */
+
+        html.theme-modern-light,
+        html.theme-modern-dark {
+            background-image: var(--theme-background-image);
+        }
+
+        html.theme-pink-skeuo {
+            background-image: none;
+        }
+
+
+        /* =========================================================
+   MODERN PROFILE / SETTINGS CARDS
+   ========================================================= */
+
+        html.theme-modern-light .profileCard,
+        html.theme-modern-light .settingsPanel,
+        html.theme-modern-dark .profileCard,
+        html.theme-modern-dark .settingsPanel,
+        html.theme-pink-skeuo .profileCard,
+        html.theme-pink-skeuo .settingsPanel {
+            border-radius: 18px;
+
+            -webkit-backdrop-filter: blur(22px);
+            backdrop-filter: blur(22px);
+        }
+
+        html.theme-modern-light .profileCard,
+        html.theme-modern-light .settingsPanel {
+            background: rgba(255, 255, 255, 0.65);
+
+            color: #111;
+
+            border-color: rgba(255, 255, 255, 0.65);
+
+            -webkit-box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.20);
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.20);
+        }
+
+        html.theme-modern-dark .profileCard,
+        html.theme-modern-dark .settingsPanel {
+            background: rgba(18, 20, 25, 0.72);
+
+            color: #fff;
+
+            border-color: rgba(255, 255, 255, 0.10);
+
+            -webkit-box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.55);
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.55);
+        }
+
+        html.theme-modern-dark .profileBody h2,
+        html.theme-modern-dark .settingsPanel h2,
+        html.theme-modern-dark .settingsPanel h3 {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        html.theme-modern-light .profileBody h2,
+        html.theme-modern-light .settingsPanel h2,
+        html.theme-modern-light .settingsPanel h3 {
+            color: #111;
+            text-shadow: none;
+        }
+
+
+        /* =========================================================
+   LINKS
+   ========================================================= */
+
+        html.theme-dark-skeuo a,
+        html.theme-dark-basic a,
+        html.theme-modern-dark a {
+            color: #82b4ff;
+        }
+
+        html.theme-light-basic a,
+        html.theme-light-skeuo a,
+        html.theme-modern-light a {
+            color: #06c;
+        }
+
+
+        /* =========================================================
+   IMAGES ARE NEVER DARKENED
+   ========================================================= */
+
+        html.theme-dark-skeuo img,
+        html.theme-dark-basic img,
+        html.theme-modern-dark img {
+            filter: none;
+        }
+
+
+        /* =========================================================
+   MOBILE
+   ========================================================= */
+
+        @media only screen and (max-width: 600px) {
+
+            #app {
+                max-width: none;
+                border: 0;
+            }
+
+            #list {
+                width: auto;
+                right: 0;
+                border-right: 0;
+            }
+
+            #thread {
+                left: 0;
+                display: none;
+            }
+
+            #app.viewing #list {
+                display: none;
+            }
+
+            #app.viewing #thread {
+                display: block;
+            }
+
+            #app.viewing #backBtn {
+                display: block;
+            }
+
+            .profileCard {
+                width: 92%;
+                max-width: 92%;
+                max-height: 90%;
+            }
+
+            .profileBanner {
+                height: 105px;
+            }
+
+            .profileBody {
+                padding-top: 55px;
+            }
+
+            .profileBody .profileAvatar,
+            .profileAvatar {
+                left: 16px;
+                top: -46px;
+
+                width: 88px;
+                height: 88px;
+
+                border-width: 4px;
+            }
+
+            .messageLine {
+                max-width: 94%;
+            }
+
+            .bubble {
+                max-width: 75%;
+            }
+        }
+
+
+        /* =========================================================
+   MODERN-ONLY FEATURES
+   ========================================================= */
+
+        html.theme-modern-light #app,
+        html.theme-modern-dark #app,
+        html.theme-pink-skeuo #app {
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+        }
+
+        /* =========================================================
+   GLOBAL PROFILE / AVATAR FIXES
+   ========================================================= */
+
+        /* Every profile avatar/frame is ALWAYS perfectly circular */
+        .profileButton,
+        .profileButton img,
+        .avatarFallback,
+        .profileAvatar {
+            -webkit-border-radius: 50% !important;
+            border-radius: 50% !important;
+        }
+
+        .profileButton {
+            overflow: hidden;
+        }
+
+        /* Prevent the image itself from ever becoming a square */
+        .profileButton img,
+        .avatarFallback,
+        .profileAvatar {
+            -webkit-clip-path: circle(50%);
+            clip-path: circle(50%);
+        }
+
+
+        /* =========================================================
+   PROFILE TEXT SYSTEM
+   ========================================================= */
+
+        /*
+   IMPORTANT:
+   Profile text follows this priority:
+
+   1. profileGradientDark  -> white
+   2. profileGradientLight -> dark
+   3. no gradient           -> current theme
+*/
+
+        /* ---------------------------------------------------------
+   BASE
+   --------------------------------------------------------- */
+
+        .profileBody {
+            color: #111;
+        }
+
+        .profileBody h2,
+        .profileBody p,
+        .profileBody .username,
+        .profileBody .pronouns,
+        .profileBody .status,
+        .profileBody .bio {
+            color: inherit;
+        }
+
+
+        /* ---------------------------------------------------------
+   LIGHT THEMES — NO PROFILE GRADIENT
+   --------------------------------------------------------- */
+
+        html.theme-light-basic .profileBody,
+        html.theme-light-skeuo .profileBody,
+        html.theme-modern-light .profileBody {
+            color: #111;
+        }
+
+        html.theme-light-basic .profileBody h2,
+        html.theme-light-skeuo .profileBody h2,
+        html.theme-modern-light .profileBody h2 {
+            color: #111;
+        }
+
+        html.theme-light-basic .profileBody p,
+        html.theme-light-skeuo .profileBody p,
+        html.theme-modern-light .profileBody p,
+        html.theme-light-basic .profileBody .username,
+        html.theme-light-basic .profileBody .pronouns,
+        html.theme-light-basic .profileBody .status,
+        html.theme-light-basic .profileBody .bio,
+        html.theme-light-skeuo .profileBody .username,
+        html.theme-light-skeuo .profileBody .pronouns,
+        html.theme-light-skeuo .profileBody .status,
+        html.theme-light-skeuo .profileBody .bio,
+        html.theme-modern-light .profileBody .username,
+        html.theme-modern-light .profileBody .pronouns,
+        html.theme-modern-light .profileBody .status,
+        html.theme-modern-light .profileBody .bio {
+            color: #555;
+        }
+
+
+        /* ---------------------------------------------------------
+   PINK THEME — NO PROFILE GRADIENT
+   --------------------------------------------------------- */
+
+        html.theme-pink-skeuo .profileBody {
+            color: #3a1829;
+        }
+
+        html.theme-pink-skeuo .profileBody h2 {
+            color: #5c2341;
+        }
+
+        html.theme-pink-skeuo .profileBody p,
+        html.theme-pink-skeuo .profileBody .username,
+        html.theme-pink-skeuo .profileBody .pronouns,
+        html.theme-pink-skeuo .profileBody .status,
+        html.theme-pink-skeuo .profileBody .bio {
+            color: #70445a;
+        }
+
+
+        /* ---------------------------------------------------------
+   DARK THEMES — NO PROFILE GRADIENT
+   --------------------------------------------------------- */
+
+        html.theme-dark-skeuo .profileBody,
+        html.theme-dark-basic .profileBody,
+        html.theme-modern-dark .profileBody {
+            color: #fff;
+        }
+
+        html.theme-dark-skeuo .profileBody h2,
+        html.theme-dark-basic .profileBody h2,
+        html.theme-modern-dark .profileBody h2 {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        html.theme-dark-skeuo .profileBody p,
+        html.theme-dark-basic .profileBody p,
+        html.theme-modern-dark .profileBody p,
+        html.theme-dark-skeuo .profileBody .username,
+        html.theme-dark-skeuo .profileBody .pronouns,
+        html.theme-dark-skeuo .profileBody .status,
+        html.theme-dark-skeuo .profileBody .bio,
+        html.theme-dark-basic .profileBody .username,
+        html.theme-dark-basic .profileBody .pronouns,
+        html.theme-dark-basic .profileBody .status,
+        html.theme-dark-basic .profileBody .bio,
+        html.theme-modern-dark .profileBody .username,
+        html.theme-modern-dark .profileBody .pronouns,
+        html.theme-modern-dark .profileBody .status,
+        html.theme-modern-dark .profileBody .bio {
+            color: #d8d8d8;
+            text-shadow: none;
+        }
+
+
+        /* =========================================================
+   PROFILE GRADIENT TEXT
+   ========================================================= */
+
+        /*
+   DARK PROFILE GRADIENT
+   Everything becomes light.
+*/
+
+        .profileCard.profileGradientDark .profileBody,
+        .profileCard.profileGradientDark .profileBody h2,
+        .profileCard.profileGradientDark .profileBody p,
+        .profileCard.profileGradientDark .profileBody .username,
+        .profileCard.profileGradientDark .profileBody .pronouns,
+        .profileCard.profileGradientDark .profileBody .status,
+        .profileCard.profileGradientDark .profileBody .bio {
+            color: #fff !important;
+
+            text-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.45);
+        }
+
+
+        /*
+   LIGHT PROFILE GRADIENT
+   Everything becomes dark.
+*/
+
+        .profileCard.profileGradientLight .profileBody,
+        .profileCard.profileGradientLight .profileBody h2,
+        .profileCard.profileGradientLight .profileBody p,
+        .profileCard.profileGradientLight .profileBody .username,
+        .profileCard.profileGradientLight .profileBody .pronouns,
+        .profileCard.profileGradientLight .profileBody .status,
+        .profileCard.profileGradientLight .profileBody .bio {
+            color: #222 !important;
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+
+        /* =========================================================
+   PROFILE BUTTON TEXT
+   ========================================================= */
+
+        /*
+   Buttons follow the SAME gradient decision as the
+   profile text.
+*/
+
+        .profileCard.profileGradientDark .profileBody button {
+            color: #fff !important;
+
+            text-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.45);
+        }
+
+        .profileCard.profileGradientLight .profileBody button {
+            color: #222 !important;
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+
+        /*
+   No gradient:
+   buttons follow the theme.
+*/
+
+        html.theme-dark-skeuo .profileBody button,
+        html.theme-dark-basic .profileBody button,
+        html.theme-modern-dark .profileBody button {
+            color: #fff;
+        }
+
+        html.theme-light-basic .profileBody button,
+        html.theme-light-skeuo .profileBody button,
+        html.theme-modern-light .profileBody button {
+            color: #111;
+        }
+
+        html.theme-pink-skeuo .profileBody button {
+            color: #5c2341;
+        }
+
+
+        /* =========================================================
+   ADD FRIEND — ALWAYS FITS THE SIDEBAR
+   ========================================================= */
+
+        .addfriend {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .addfriend input {
+            display: block;
+
+            width: 100%;
+            max-width: none;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            margin: 0 0 6px 0;
+        }
+
+        .addfriend button {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            max-width: 100%;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+   ADD FRIEND — LIGHT THEMES
+   ========================================================= */
+
+        html.theme-light-basic .addfriend,
+        html.theme-light-skeuo .addfriend,
+        html.theme-modern-light .addfriend {
+            color: #222;
+        }
+
+        html.theme-light-basic .addfriend input,
+        html.theme-light-skeuo .addfriend input {
+            background: #fff;
+            color: #111;
+        }
+
+        html.theme-modern-light .addfriend {
+            background: rgba(255, 255, 255, 0.35);
+
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        html.theme-modern-light .addfriend input {
+            background: rgba(255, 255, 255, 0.65);
+
+            color: #111;
+
+            border-color: rgba(0, 0, 0, 0.12);
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+   ADD FRIEND — DARK THEMES
+   ========================================================= */
+
+        html.theme-dark-skeuo .addfriend,
+        html.theme-dark-basic .addfriend,
+        html.theme-modern-dark .addfriend {
+            color: #fff;
+        }
+
+        html.theme-dark-skeuo .addfriend input,
+        html.theme-dark-basic .addfriend input,
+        html.theme-modern-dark .addfriend input {
+            background: #1c1e22;
+            color: #fff;
+
+            border-color: #333;
+        }
+
+        html.theme-modern-dark .addfriend {
+            background: rgba(10, 12, 16, 0.35);
+
+            border-color: rgba(255, 255, 255, 0.08);
+
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+        }
+
+        html.theme-modern-dark .addfriend input {
+            background: rgba(255, 255, 255, 0.08);
+
+            color: #fff;
+
+            border-color: rgba(255, 255, 255, 0.12);
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+   ADD FRIEND — PINK
+   ========================================================= */
+
+        html.theme-pink-skeuo .addfriend {
+            background: rgba(255, 225, 238, 0.65);
+            color: #5c2323;
+        }
+
+        html.theme-pink-skeuo .addfriend input {
+            background: rgba(255, 255, 255, 0.65);
+            color: #3a1829;
+
+            border-color: #d39ab2;
+
+            border-radius: 8px;
+        }
+
+
+        /* =========================================================
+   ACTIVE CHANNEL — ALL THEMES
+   ========================================================= */
+
+        /* Light Basic was missing this */
+        html.theme-light-basic .conv.active {
+            color: #fff;
+
+            background: #3985d8;
+
+            border-color: #2d70ba;
+
+            text-shadow:
+                0 -1px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        html.theme-light-basic .conv.active .sub {
+            color: #dcecff;
+        }
+
+        /* Light Skeuo */
+        html.theme-light-skeuo .conv.active {
+            color: #fff;
+
+            background: #3d80e0;
+
+            background: -webkit-linear-gradient(top,
+                    #5e9bf0,
+                    #2f6fd6);
+
+            background: linear-gradient(to bottom,
+                    #5e9bf0,
+                    #2f6fd6);
+
+            text-shadow:
+                0 -1px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        html.theme-light-skeuo .conv.active .sub {
+            color: #d8e6ff;
+        }
+
+        /* Modern Light */
+        html.theme-modern-light .conv.active {
+            color: #fff;
+
+            background: rgba(45, 130, 230, 0.82);
+
+            border-color: rgba(20, 90, 170, 0.45);
+
+            text-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+        html.theme-modern-light .conv.active .sub {
+            color: #e4f0ff;
+        }
+
+        /* Modern Dark */
+        html.theme-modern-dark .conv.active {
+            color: #fff;
+
+            background: rgba(45, 105, 175, 0.72);
+
+            border-color: rgba(120, 180, 240, 0.25);
+
+            text-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.35);
+        }
+
+        html.theme-modern-dark .conv.active .sub {
+            color: #d8eaff;
+        }
+
+        /* Pink */
+        html.theme-pink-skeuo .conv.active {
+            color: #fff;
+
+            background: linear-gradient(to bottom,
+                    #d978a3,
+                    #b95582);
+
+            border-color: #a84973;
+
+            text-shadow:
+                0 -1px 0 rgba(80, 20, 45, 0.35);
+        }
+
+        html.theme-pink-skeuo .conv.active .sub {
+            color: #ffeaf3;
+        }
+
+
+        /* =========================================================
+   COMPOSER — RESPONSIVE FIT
+   ========================================================= */
+
+        #composer {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            height: 84px;
+
+            padding: 7px 10px;
+        }
+
+
+        /* Text box fills the available composer width */
+
+        #composer #message {
+            display: block;
+
+            width: 100%;
+            max-width: none;
+
+            height: 38px;
+
+            margin: 0 0 5px 0;
+
+            padding: 7px 9px;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            resize: none;
+        }
+
+
+        /* Send button */
+
+        #composer button,
+        #sendBtn {
+            display: block;
+
+            height: 27px;
+
+            min-width: 70px;
+
+            max-width: 100%;
+
+            padding: 2px 14px;
+
+            margin: 0;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+            vertical-align: top;
+        }
+
+
+        /* If the composer contains multiple controls,
+   don't let them overflow horizontally. */
+
+        #composer>* {
+            max-width: 100%;
+        }
+
+
+        /*
+   If your send button has an ID, this makes the sizing
+   more precise without requiring the HTML to change.
+*/
+        #sendBtn {
+            height: 28px;
+
+            min-width: 70px;
+
+            padding: 3px 14px;
+
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================================
+   PINK SKEUO — FLAT TOP
+   ========================================================= */
+
+        /*
+   The outer application should NOT have a rounded top.
+   This is what was causing the pink theme's top corners
+   to look rounded.
+*/
+        html.theme-pink-skeuo #app {
+            border-radius: 0 0 0px 0px;
+        }
+
+
+        /*
+   Header follows the flat top instead of creating
+   another rounded surface.
+*/
+        html.theme-pink-skeuo #header {
+            border-radius: 0;
+        }
+
+
+        /*
+   Profile/settings cards can still be rounded.
+*/
+        html.theme-pink-skeuo .profileCard,
+        html.theme-pink-skeuo .settingsPanel {
+            border-radius: 12px;
+        }
+
+
+        /* =========================================================
+   FORCE CIRCULAR PROFILE FRAMES IN EVERY THEME
+   ========================================================= */
+
+        html.theme-light-skeuo .profileButton,
+        html.theme-dark-skeuo .profileButton,
+        html.theme-light-basic .profileButton,
+        html.theme-dark-basic .profileButton,
+        html.theme-modern-light .profileButton,
+        html.theme-modern-dark .profileButton,
+        html.theme-pink-skeuo .profileButton,
+
+        html.theme-light-skeuo .profileButton img,
+        html.theme-dark-skeuo .profileButton img,
+        html.theme-light-basic .profileButton img,
+        html.theme-dark-basic .profileButton img,
+        html.theme-modern-light .profileButton img,
+        html.theme-modern-dark .profileButton img,
+        html.theme-pink-skeuo .profileButton img,
+
+        html.theme-light-skeuo .avatarFallback,
+        html.theme-dark-skeuo .avatarFallback,
+        html.theme-light-basic .avatarFallback,
+        html.theme-dark-basic .avatarFallback,
+        html.theme-modern-light .avatarFallback,
+        html.theme-modern-dark .avatarFallback,
+        html.theme-pink-skeuo .avatarFallback {
+            border-radius: 50% !important;
+        }
+
+
+        /* Profile-card avatar is also always circular */
+        html.theme-light-skeuo .profileAvatar,
+        html.theme-dark-skeuo .profileAvatar,
+        html.theme-light-basic .profileAvatar,
+        html.theme-dark-basic .profileAvatar,
+        html.theme-modern-light .profileAvatar,
+        html.theme-modern-dark .profileAvatar,
+        html.theme-pink-skeuo .profileAvatar {
+            border-radius: 50% !important;
+        }
+        /* =========================================================
+        QUICKCSS EDITOR
+        ========================================================= */
+
+        #quickCSSWindow {
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            width: 760px;
+            height: 560px;
+
+            max-width: 92%;
+            max-height: 90%;
+
+            transform: translate(-50%, -50%);
+
+            z-index: 5000;
+
+            background: #1e1e1e;
+
+            border: 1px solid #555;
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.55);
+
+            display: none;
+
+            overflow: hidden;
+        }
+
+        #quickCSSWindow.open {
+            display: block;
+        }
+
+        #quickCSSTitlebar {
+            height: 36px;
+
+            background: linear-gradient(
+                to bottom,
+                #f5f5f5,
+                #d7d7d7
+            );
+
+            border-bottom: 1px solid #777;
+
+            color: #222;
+
+            font-weight: bold;
+
+            line-height: 36px;
+
+            padding-left: 12px;
+
+            box-sizing: border-box;
+        }
+
+        #quickCSSEditor {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            top: 36px;
+            bottom: 42px;
+        }
+
+        #quickCSSFooter {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 42px;
+
+            background: #ddd;
+
+            border-top: 1px solid #777;
+
+            padding: 7px;
+
+            box-sizing: border-box;
+
+            text-align: right;
+        }
+
+        #quickCSSFooter button {
+            margin-left: 6px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #quickCSSWindow {
+                width: 96%;
+                height: 90%;
+            }
+        }
+    </style>
+    <style id="quickCSSInjected"></style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- header -->
+        <div id="header">
+            <button id="backBtn" onclick="showList()">Back</button>
+            <span class="title" id="title">Chatroom</span>
+            <span class="actions" id="actions" style="display:none;">
+                <label>
+                    <input type="checkbox" id="anon">
+                    Anon
+                </label>
+
+                <button onclick="openMyProfile()">Profile</button>
+                <button onclick="openSettings()">Settings</button>
+                <button onclick="logout()">Log out</button>
+            </span>
+        </div>
+
+        <!-- login -->
+        <div id="login" class="page">
+            <h2>Login</h2>
+            <input type="text" id="loginUser" placeholder="Username">
+            <input type="password" id="loginPass" placeholder="Password">
+            <br>
+            <button onclick="login()">Login</button>
+            <p>No account? <a onclick="showRegister()">Register</a></p>
+        </div>
+
+        <!-- register -->
+        <div id="register" class="page" style="display:none;">
+            <h2>Create Account</h2>
+            <input type="text" id="regUser" placeholder="Username">
+            <input type="password" id="regPass" placeholder="Password">
+            <br>
+            <button onclick="register()">Create Account</button>
+            <p>Already registered? <a onclick="showLogin()">Login</a></p>
+        </div>
+
+        <!-- chat -->
+        <div id="chat">
+
+            <div id="list">
+                <div class="listhead">Conversations</div>
+                <div id="convs"></div>
+                <div class="addfriend">
+                    <input type="text" id="friendName" placeholder="Add friend by username">
+                    <button onclick="addFriend()">Add friend</button>
+                </div>
+            </div>
+
+            <div id="thread">
+
+                <div id="typingIndicator"></div>
+
+                <div id="messages"></div>
+
+                <div id="composer">
+
+                    <input type="text" id="message" maxlength="374" placeholder="Type a message...">
+
+                    <button onclick="sendMessage()">
+                        Send
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="profileCard" class="profileCard" style="display:none;">
+
+            <div id="profileBanner" class="profileBanner"></div>
+
+            <div class="profileBody">
+
+                <img id="profileAvatar" class="profileAvatar" src="" alt="">
+
+                <h2 id="profileDisplayName">
+                    User
+                </h2>
+
+                <div id="profileUsername"></div>
+
+                <div id="profilePronouns"></div>
+
+                <div id="profileBio" class="profileBio"></div>
+
+                <div id="profileStatus"></div>
+
+                <button id="profileMessageButton" onclick="messageProfileUser()">
+                    Message
+                </button>
+
+                <button id="profileFriendButton" onclick="friendProfileUser()">
+                    Add Friend
+                </button>
+
+                <button id="profileBlockButton" onclick="blockProfileUser()">
+                    Block
+                </button>
+
+                <button onclick="closeProfile()">
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="settingsPanel" class="settingsPanel" style="display:none;">
+
+            <h2>Settings</h2>
+
+            <h3>Notifications</h3>
+
+            <div class="settingsNotificationRow">
+
+                <div>
+                    <strong>Desktop Notifications</strong>
+                    <br>
+                    <div id="notificationStatus">
+                        Checking notification permission...
+                    </div>
+                </div>
+
+                <button type="button" id="notificationButton" onclick="requestNotifications()">
+                    Enable Notifications
+                </button>
+
+            </div>
+
+            <h3>Profile</h3>
+
+            <label>
+                Profile name
+                <input type="text" id="settingDisplayName" maxlength="64">
+            </label>
+            <label>
+                Pronouns
+                <input type="text" id="settingPronouns" maxlength="64">
+            </label>
+
+            <label>
+                Bio
+                <textarea id="settingBio" maxlength="500"></textarea>
+            </label>
+            <div class="settingsProfileUploads">
+
+                <div class="settingsSectionTitle">
+                    Profile Picture
+                </div>
+
+                <div class="settingsUploadRow">
+
+                    <input type="file" id="settingAvatarFile"
+                        accept="image/jpeg,image/png,image/gif,image/webp,image/bmp">
+
+                    <button type="button" onclick="uploadProfileImage('avatar')">
+                        Upload Profile Picture
+                    </button>
+
+                </div>
+
+                <div id="avatarUploadStatus" class="settingsUploadStatus"></div>
+
+
+                <div class="settingsSectionTitle">
+                    Profile Banner
+                </div>
+
+                <div class="settingsUploadRow">
+
+                    <input type="file" id="settingBannerFile"
+                        accept="image/jpeg,image/png,image/gif,image/webp,image/bmp">
+
+                    <button type="button" onclick="uploadProfileImage('banner')">
+                        Upload Profile Banner
+                    </button>
+
+                </div>
+
+                <div id="bannerUploadStatus" class="settingsUploadStatus"></div>
+
+            </div>
+
+            <h3>Appearance</h3>
+
+            <label>
+                Color 1
+                <input type="text" id="settingColor1" placeholder="#4f8cff">
+            </label>
+
+            <br>
+
+            <label>
+                Color 2
+                <input type="text" id="settingColor2" placeholder="#8b5cff">
+            </label>
+
+            <br>
+
+            <label>
+                <input type="checkbox" id="settingGradient">
+                Use profile gradient
+            </label>
+
+            <h3>Status</h3>
+
+            <select id="settingStatus">
+
+                <option value="online">
+                    Online
+                </option>
+
+                <option value="dnd">
+                    Do Not Disturb
+                </option>
+
+                <option value="offline">
+                    Invisible
+                </option>
+            </select>
+
+            <h3>Theme</h3>
+
+            <button onclick="openQuickCSS()">Edit QuickCSS</button>
+
+            <select id="settingTheme" onchange="changeTheme(this.value)">
+                <option value="light-skeuo">Light Skeuo</option>
+                <option value="dark-skeuo">Dark Skeuo</option>
+                <option value="light-basic">Light Basic</option>
+                <option value="dark-basic">Dark Basic</option>
+                <option value="pink-skeuo">Pink Skeuo</option>
+                <option value="modern-light">Modern Light</option>
+                <option value="modern-dark">Modern Dark</option>
+            </select>
+
+            <br><br>
+
+            <button onclick="saveSettings()">
+                Save
+            </button>
+
+            <button onclick="closeSettings()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+    <div id="quickCSSWindow">
+
+        <div id="quickCSSTitlebar">
+            Edit QuickCSS
+        </div>
+
+        <div id="quickCSSEditor"></div>
+
+        <div id="quickCSSFooter">
+            <button onclick="closeQuickCSS()">Done</button>
+        </div>
+
+    </div>
+    <script>
+
+        var THEME_KEY = "chat_theme";
+        var BACKGROUND_KEY = "chat_theme_background";
+
+        /*
+         * Themes that use modern CSS features such as:
+         * backdrop-filter, transparency, CSS variables, etc.
+         */
+        var MODERN_THEMES = {
+            "modern-light": true,
+            "modern-dark": true
+        };
+
+
+        /* =========================================================
+           OLD / LEGACY BROWSER DETECTION
+           ========================================================= */
+
+        function isOldBrowser() {
+
+            var ua = navigator.userAgent || "";
+            var appVersion = navigator.appVersion || "";
+
+            /*
+             * Internet Explorer
+             */
+            if (
+                ua.indexOf("MSIE ") !== -1 ||
+                ua.indexOf("Trident/") !== -1
+            ) {
+                return true;
+            }
+
+
+            /*
+             * Old iOS Safari / iOS WebKit
+             *
+             * iOS 9 and below = definitely old
+             */
+            var iosMatch = ua.match(/OS (\d+)[._](\d+)/);
+
+            if (
+                /iPhone|iPad|iPod/.test(ua) &&
+                iosMatch
+            ) {
+
+                var iosMajor =
+                    parseInt(iosMatch[1], 10);
+
+                if (iosMajor < 10) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Old macOS versions.
+             *
+             * OS X 10.6, 10.7, 10.8, etc.
+             */
+            var macMatch =
+                ua.match(/Mac OS X (\d+)[._](\d+)(?:[._](\d+))?/);
+
+            if (macMatch) {
+
+                var macMajor =
+                    parseInt(macMatch[1], 10);
+
+                var macMinor =
+                    parseInt(macMatch[2], 10);
+
+                /*
+                 * 10.6, 10.7 and 10.8 are considered legacy.
+                 */
+                if (
+                    macMajor === 10 &&
+                    macMinor <= 8
+                ) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Old Safari.
+             *
+             * Safari user agents contain:
+             *
+             * Version/5.0 Safari/...
+             * Version/6.0 Safari/...
+             *
+             * Safari 8 and below are treated as legacy.
+             */
+            var safariMatch =
+                ua.match(/Version\/(\d+)(?:\.(\d+))?.*Safari\//);
+
+            if (safariMatch) {
+
+                var safariMajor =
+                    parseInt(safariMatch[1], 10);
+
+                if (safariMajor < 9) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Old Android WebKit browsers.
+             */
+            var androidMatch =
+                ua.match(/Android (\d+)(?:\.(\d+))?/);
+
+            if (androidMatch) {
+
+                var androidMajor =
+                    parseInt(androidMatch[1], 10);
+
+                if (androidMajor < 5) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Old Chrome.
+             */
+            var chromeMatch =
+                ua.match(/Chrome\/(\d+)/);
+
+            if (chromeMatch) {
+
+                var chromeMajor =
+                    parseInt(chromeMatch[1], 10);
+
+                if (chromeMajor < 60) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Old Firefox.
+             */
+            var firefoxMatch =
+                ua.match(/Firefox\/(\d+)/);
+
+            if (firefoxMatch) {
+
+                var firefoxMajor =
+                    parseInt(firefoxMatch[1], 10);
+
+                if (firefoxMajor < 55) {
+                    return true;
+                }
+            }
+
+
+            /*
+             * Very old WebKit.
+             */
+            var webkitMatch =
+                ua.match(/AppleWebKit\/(\d+)/);
+
+            if (webkitMatch) {
+
+                var webkitMajor =
+                    parseInt(webkitMatch[1], 10);
+
+                if (webkitMajor < 600) {
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
+
+
+        /* =========================================================
+           APPLY THEME
+           ========================================================= */
+
+        function applyTheme(theme, skipWarning) {
+
+            var root = document.documentElement;
+
+            var themeClass = "theme-" + theme;
+
+            var oldClasses = [
+                "theme-light-skeuo",
+                "theme-dark-skeuo",
+                "theme-light-basic",
+                "theme-dark-basic",
+                "theme-pink-skeuo",
+                "theme-modern-light",
+                "theme-modern-dark",
+                "theme-dark",
+                "theme-light"
+            ];
+
+            var i;
+
+            /* =====================================================
+               OLD BROWSER WARNING
+               ===================================================== */
+
+            if (
+                MODERN_THEMES[theme] &&
+                isOldBrowser() &&
+                !skipWarning
+            ) {
+
+                var confirmed = window.confirm(
+                    "This theme is designed for modern browsers.\n\n" +
+                    "Your browser appears to be an older browser " +
+                    "and may not support some of the effects used " +
+                    "by this theme, such as transparency, blur, " +
+                    "and modern CSS.\n\n" +
+                    "Are you sure you want to apply this theme?"
+                );
+
+                if (!confirmed) {
+
+                    var previous = null;
+
+                    try {
+                        previous = localStorage.getItem(THEME_KEY);
+                    } catch (e) { }
+
+                    if (previous && previous !== theme) {
+
+                        applyTheme(previous, true);
+
+                    } else {
+
+                        applyTheme("light-skeuo", true);
+
+                    }
+
+                    return false;
+                }
+            }
+
+
+            /* =====================================================
+               REMOVE ONLY OLD THEME CLASSES
+               ===================================================== */
+
+            var classes = root.className
+                .replace(/^\s+|\s+$/g, "")
+                .split(/\s+/);
+
+            var newClasses = [];
+
+            for (i = 0; i < classes.length; i++) {
+
+                if (!classes[i]) {
+                    continue;
+                }
+
+                var isThemeClass = false;
+
+                for (var j = 0; j < oldClasses.length; j++) {
+
+                    if (classes[i] === oldClasses[j]) {
+                        isThemeClass = true;
+                        break;
+                    }
+                }
+
+                if (!isThemeClass) {
+                    newClasses.push(classes[i]);
+                }
+            }
+
+            newClasses.push(themeClass);
+
+            root.className = newClasses.join(" ");
+
+
+            /* =====================================================
+               SAVE THEME
+               ===================================================== */
+
+            try {
+                localStorage.setItem(
+                    THEME_KEY,
+                    theme
+                );
+            } catch (e) { }
+
+
+            /* =====================================================
+               UPDATE THEME SELECTOR
+               ===================================================== */
+
+            var selector =
+                document.getElementById("settingTheme");
+
+            if (selector) {
+                selector.value = theme;
+            }
+
+
+            /* =====================================================
+               BACKGROUND CONTROLS
+               ===================================================== */
+
+            updateBackgroundControls(theme);
+
+            return true;
+        }
+
+
+        /* =========================================================
+           THEME SELECTOR
+           ========================================================= */
+
+        function changeTheme(theme) {
+
+            applyTheme(
+                theme,
+                false
+            );
+        }
+
+
+        /* =========================================================
+           BACKGROUND IMAGE
+           ========================================================= */
+
+        function saveThemeBackground() {
+
+            var input =
+                document.getElementById(
+                    "themeBackgroundURL"
+                );
+
+
+            if (!input) {
+                return;
+            }
+
+
+            var url =
+                input.value;
+
+
+            try {
+
+                localStorage.setItem(
+                    BACKGROUND_KEY,
+                    url
+                );
+
+            } catch (e) { }
+
+
+            setThemeBackground(url);
+        }
+
+
+        function setThemeBackground(url) {
+
+            if (!url) {
+
+                document.documentElement.style
+                    .removeProperty(
+                        "--theme-background-image"
+                    );
+
+                return;
+            }
+
+
+            /*
+             * Escape characters that could
+             * break the CSS url().
+             */
+            var safeURL =
+                String(url)
+                    .replace(/\\/g, "\\\\")
+                    .replace(/"/g, '\\"');
+
+
+            document.documentElement.style
+                .setProperty(
+                    "--theme-background-image",
+                    'url("' + safeURL + '")'
+                );
+        }
+
+
+        /* =========================================================
+           BACKGROUND SETTINGS VISIBILITY
+           ========================================================= */
+
+        function updateBackgroundControls(theme) {
+
+            var box =
+                document.getElementById(
+                    "customBackgroundSettings"
+                );
+
+
+            if (!box) {
+                return;
+            }
+
+
+            if (
+                theme === "modern-light" ||
+                theme === "modern-dark"
+            ) {
+
+                box.style.display = "block";
+
+            } else {
+
+                box.style.display = "none";
+            }
+        }
+
+
+        /* =========================================================
+           LOAD THEME
+           ========================================================= */
+
+        function loadTheme() {
+
+            var theme =
+                "light-skeuo";
+
+            var background =
+                "";
+
+
+            try {
+
+                theme =
+                    localStorage.getItem(
+                        THEME_KEY
+                    ) || "light-skeuo";
+
+
+                background =
+                    localStorage.getItem(
+                        BACKGROUND_KEY
+                    ) || "";
+
+            } catch (e) { }
+
+
+            /*
+             * Don't show the confirmation dialog
+             * while loading the saved theme.
+             */
+            applyTheme(
+                theme,
+                true
+            );
+
+
+            if (background) {
+
+                setThemeBackground(
+                    background
+                );
+
+
+                var input =
+                    document.getElementById(
+                        "themeBackgroundURL"
+                    );
+
+
+                if (input) {
+
+                    input.value =
+                        background;
+                }
+            }
+        }
+
+
+        /* =========================================================
+           START
+           ========================================================= */
+
+        if (document.addEventListener) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                loadTheme
+            );
+
+        } else {
+
+            window.attachEvent(
+                "onload",
+                loadTheme
+            );
+        }
+
+    </script>
+    <script>
+        var API = "https://viewers-multiple-tested-purposes.trycloudflare.com";
+        var currentUser = "";
+        var requestFailedOnce = false;
+
+        /* Small compatibility helpers for Safari/iOS versions without trim or JSON. */
+        function cleanText(value) {
+            return ("" + (value || "")).replace(/^\s+|\s+$/g, "");
+        }
+
+        if (!window.JSON) {
+            window.JSON = {
+                parse: function (text) { return eval("(" + text + ")"); },
+                stringify: function (value) {
+                    var type = typeof value;
+                    var i, parts, key;
+                    if (value === null) return "null";
+                    if (type == "string") return '"' + value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\r/g, "\\r").replace(/\n/g, "\\n") + '"';
+                    if (type == "number" || type == "boolean") return "" + value;
+                    if (Object.prototype.toString.call(value) == "[object Array]") {
+                        parts = [];
+                        for (i = 0; i < value.length; i++) parts.push(window.JSON.stringify(value[i]));
+                        return "[" + parts.join(",") + "]";
+                    }
+                    parts = [];
+                    for (key in value) if (Object.prototype.hasOwnProperty.call(value, key)) parts.push(window.JSON.stringify(key) + ":" + window.JSON.stringify(value[key]));
+                    return "{" + parts.join(",") + "}";
+                }
+            };
+        }
+
+        /* active conversation: { type: "public" } or { type: "dm", user: "someName" } */
+        var active = { type: "public" };
+        var friends = [];
+        var friendRequests = [];
+        var lastSig = "";
+        var chatProfiles = {};
+
+        /* ---------- DM notifications ---------- */
+
+        var notifiedDMs = {};
+        var notificationHistoryLoaded = false;
+        var notificationInitialScan = false;
+
+        function showNotification(title, options) {
+
+            if (!window.Notification) {
+                return false;
+            }
+
+            if (Notification.permission != "granted") {
+                return false;
+            }
+
+            try {
+
+                var n = new Notification(
+                    title,
+                    options
+                );
+
+                return true;
+
+            } catch (e) {
+
+                /*
+                 * Don't silently hide the error.
+                 * This makes debugging much easier.
+                 */
+                if (window.console && console.log) {
+                    console.log(
+                        "Notification failed:",
+                        e
+                    );
+                }
+
+                return false;
+            }
+        }
+
+
+        function getDMMessageID(message) {
+
+            /*
+             * Prefer the server's message ID.
+             */
+            if (message.id) {
+                return "" + message.id;
+            }
+
+            /*
+             * Fallback for older messages that don't
+             * have an ID.
+             */
+            return (
+                (message.from || "") +
+                "|" +
+                (message.text || "") +
+                "|" +
+                (message.time || "")
+            );
+        }
+
+
+        function notifyNewDM(message) {
+
+            if (!message) {
+                return;
+            }
+
+            /*
+             * Never notify ourselves.
+             */
+            if (
+                message.from &&
+                message.from == currentUser
+            ) {
+                return;
+            }
+
+            /*
+             * Don't notify while the user is actively
+             * looking at that DM.
+             */
+            if (
+                active.type == "dm" &&
+                active.user == message.from &&
+                !document.hidden
+            ) {
+                return;
+            }
+
+            var id =
+                getDMMessageID(message);
+
+            if (notifiedDMs[id]) {
+                return;
+            }
+
+            /*
+             * Mark it before creating the notification
+             * so polling cannot create duplicates.
+             */
+            notifiedDMs[id] = true;
+
+            var text =
+                message.text ||
+                "Sent you a file";
+
+            showNotification(
+                message.from || "New message",
+                {
+                    body: text,
+                    tag: "dm-" + id
+                }
+            );
+        }
+
+        /* ---------- XHR helper ---------- */
+
+        /*
+         * All requests go through the Python API on your PC.
+         * withCredentials is important because login creates
+         * a session cookie on the API.
+         */
+        function apiRequest(method, path, callback) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open(method, API + path, true);
+
+            xhr.withCredentials = true;
+
+            callback(xhr);
+
+            return xhr;
+        }
+
+
+        /* ---------- view switching ---------- */
+
+        function showRegister() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("register").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("register").style.display = "none";
+            document.getElementById("login").style.display = "block";
+        }
+
+        function showList() {
+            document.getElementById("app").className = "";
+            setTitle();
+        }
+
+        function updateNotificationSettings() {
+
+            var status =
+                document.getElementById(
+                    "notificationStatus"
+                );
+
+            var button =
+                document.getElementById(
+                    "notificationButton"
+                );
+
+            if (!window.Notification) {
+
+                status.innerHTML =
+                    "This browser does not support desktop notifications.";
+
+                button.style.display =
+                    "none";
+
+                return;
+            }
+
+            var permission =
+                Notification.permission;
+
+            if (permission == "granted") {
+
+                status.innerHTML =
+                    "Notifications are enabled.";
+
+                button.innerHTML =
+                    "Notifications Enabled";
+
+                button.disabled =
+                    true;
+
+            } else if (permission == "denied") {
+
+                status.innerHTML =
+                    "Notifications are blocked. Allow them in your browser's site settings.";
+
+                button.innerHTML =
+                    "Notifications Blocked";
+
+                button.disabled =
+                    true;
+
+            } else {
+
+                status.innerHTML =
+                    "Notifications have not been enabled yet.";
+
+                button.innerHTML =
+                    "Enable Notifications";
+
+                button.disabled =
+                    false;
+            }
+        }
+
+
+        function requestNotifications() {
+
+            if (!window.Notification) {
+
+                alert(
+                    "This browser does not support desktop notifications."
+                );
+
+                return;
+            }
+
+            if (
+                Notification.permission ==
+                "granted"
+            ) {
+
+                updateNotificationSettings();
+
+                /*
+                 * Send a test notification.
+                 */
+                showNotification(
+                    "Notifications enabled",
+                    {
+                        body:
+                            "You will now receive notifications for new messages."
+                    }
+                );
+
+                return;
+            }
+
+            if (
+                Notification.permission ==
+                "denied"
+            ) {
+
+                alert(
+                    "Notifications are blocked for this website. " +
+                    "Allow notifications in your browser's site settings."
+                );
+
+                updateNotificationSettings();
+
+                return;
+            }
+
+            /*
+             * IMPORTANT:
+             *
+             * This function is called directly by the
+             * "Enable Notifications" button.
+             *
+             * That means the browser considers this a
+             * user gesture and is allowed to show the
+             * permission prompt.
+             */
+            try {
+
+                var result =
+                    Notification.requestPermission(
+                        function (permission) {
+
+                            updateNotificationSettings();
+
+                            if (
+                                permission ==
+                                "granted"
+                            ) {
+
+                                showNotification(
+                                    "Notifications enabled",
+                                    {
+                                        body:
+                                            "You will now receive notifications for new messages."
+                                    }
+                                );
+                            }
+                        }
+                    );
+
+                /*
+                 * Modern browsers return a Promise.
+                 */
+                if (
+                    result &&
+                    typeof result.then ==
+                    "function"
+                ) {
+
+                    result.then(
+                        function (permission) {
+
+                            updateNotificationSettings();
+
+                            if (
+                                permission ==
+                                "granted"
+                            ) {
+
+                                showNotification(
+                                    "Notifications enabled",
+                                    {
+                                        body:
+                                            "You will now receive notifications for new messages."
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
+
+            } catch (e) {
+
+                if (window.console && console.log) {
+                    console.log(
+                        "Notification permission error:",
+                        e
+                    );
+                }
+
+                alert(
+                    "Could not request notification permission."
+                );
+            }
+        }
+
+        /* ---------- auth ---------- */
+
+        function register() {
+
+            var u = cleanText(document.getElementById("regUser").value);
+            var p = document.getElementById("regPass").value;
+
+            if (u == "" || p == "") {
+                alert("Fill everything in.");
+                return;
+            }
+
+            var xhr = apiRequest("POST", "/register", function (xhr) {
+
+                xhr.setRequestHeader(
+                    "Content-Type",
+                    "application/json"
+                );
+
+                xhr.onreadystatechange = function () {
+
+                    if (xhr.readyState != 4)
+                        return;
+
+                    if (xhr.status == 200) {
+
+                        alert("Account created!");
+
+                        document.getElementById("regUser").value = "";
+                        document.getElementById("regPass").value = "";
+
+                        showLogin();
+
+                    } else {
+
+                        var reason = "Could not create account.";
+
+                        try {
+                            var res = JSON.parse(xhr.responseText);
+
+                            if (res && res.error)
+                                reason = res.error;
+
+                        } catch (e) { }
+
+                        alert(reason);
+                    }
+                };
+            });
+
+            xhr.send(JSON.stringify({
+                username: u,
+                password: p
+            }));
+        }
+
+
+        function login() {
+
+            var u = cleanText(document.getElementById("loginUser").value);
+            var p = document.getElementById("loginPass").value;
+
+            if (u == "" || p == "") {
+                alert("Enter your username and password.");
+                return;
+            }
+
+            var xhr = apiRequest("POST", "/login", function (xhr) {
+
+                xhr.setRequestHeader(
+                    "Content-Type",
+                    "application/json"
+                );
+
+                xhr.onreadystatechange = function () {
+
+                    if (xhr.readyState != 4)
+                        return;
+
+                    if (xhr.status == 200) {
+
+                        var result = {};
+
+                        try {
+                            result = JSON.parse(xhr.responseText);
+                        } catch (e) { }
+
+                        currentUser =
+                            result.username ||
+                            u;
+
+                        notifiedDMs = {};
+                        notificationHistoryLoaded = false;
+                        notificationInitialScan = false;
+
+                        active = {
+                            type: "public"
+                        };
+
+                        /* Ask for notification permission after the login click. */
+                        if (
+                            window.Notification &&
+                            Notification.permission == "default"
+                        ) {
+                            try {
+                                Notification.requestPermission();
+                            } catch (e) { }
+                        }
+
+                        active = {
+                            type: "public"
+                        };
+                        lastSig = "";
+
+                        document.getElementById(
+                            "actions"
+                        ).style.display = "inline";
+
+                        document.getElementById(
+                            "login"
+                        ).style.display = "none";
+
+                        document.getElementById(
+                            "register"
+                        ).style.display = "none";
+
+                        document.getElementById(
+                            "chat"
+                        ).style.display = "block";
+
+                        refreshFriends();
+
+                        selectConv(
+                            { type: "public" },
+                            true
+                        );
+
+                    } else {
+
+                        alert(
+                            "Incorrect username or password."
+                        );
+                    }
+                };
+            });
+
+            xhr.send(JSON.stringify({
+                username: u,
+                password: p
+            }));
+        }
+
+
+        function logout() {
+
+            var request = apiRequest("POST", "/logout", function (xhr) { });
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send("{}");
+
+            currentUser = "";
+
+            friends = [];
+
+            notifiedDMs = {};
+            notificationHistoryLoaded = false;
+            notificationInitialScan = false;
+
+            active = {
+                type: "public"
+            };
+
+            lastSig = "";
+
+            document.getElementById(
+                "chat"
+            ).style.display = "none";
+
+            document.getElementById(
+                "actions"
+            ).style.display = "none";
+
+            document.getElementById(
+                "app"
+            ).className = "";
+
+            setTitle();
+
+            showLogin();
+        }
+
+
+        /* ---------- friends / conversation list ---------- */
+
+        function addFriend() {
+
+            var f = cleanText(document
+                .getElementById("friendName")
+                .value);
+
+            if (f == "")
+                return;
+
+            if (f.toLowerCase() == currentUser.toLowerCase()) {
+
+                alert("You can't add yourself.");
+
+                return;
+            }
+
+            var xhr = apiRequest(
+                "POST",
+                "/friends/add",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange = function () {
+
+                        if (xhr.readyState != 4)
+                            return;
+
+                        if (xhr.status == 200) {
+
+                            document.getElementById(
+                                "friendName"
+                            ).value = "";
+
+                            refreshFriends();
+
+                        } else {
+
+                            var reason =
+                                "Could not add friend.";
+
+                            try {
+
+                                var res =
+                                    JSON.parse(
+                                        xhr.responseText
+                                    );
+
+                                if (res && res.error)
+                                    reason = res.error;
+
+                            } catch (e) { }
+
+                            alert(reason);
+                        }
+                    };
+                }
+            );
+
+            xhr.send(JSON.stringify({
+                friend: f
+            }));
+        }
+
+
+        function refreshFriends() {
+
+            /*
+             * The new API determines the current user from
+             * the session cookie, so we no longer send ?user=...
+             */
+
+            var xhr = apiRequest(
+                "GET",
+                "/friends",
+                function (xhr) {
+
+                    xhr.onreadystatechange = function () {
+
+                        if (xhr.readyState != 4)
+                            return;
+
+                        if (xhr.status == 401) {
+
+                            return;
+                        }
+
+                        if (xhr.status != 200)
+                            return;
+
+                        try {
+
+                            friends =
+                                JSON.parse(
+                                    xhr.responseText
+                                );
+
+                            renderConvs();
+                            refreshFriendRequests();
+
+                        } catch (e) { }
+                    };
+                }
+            );
+
+            xhr.send();
+        }
+
+
+        function refreshFriendRequests() {
+            var xhr = apiRequest("GET", "/friends/requests", function (xhr) {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4 || xhr.status != 200) return;
+                    try {
+                        friendRequests = JSON.parse(xhr.responseText);
+                        renderConvs();
+                    } catch (e) { }
+                };
+            });
+            xhr.send();
+        }
+
+        function checkDMNotifications() {
+
+            if (!currentUser)
+                return;
+
+            if (!friends || friends.length == 0)
+                return;
+
+
+            /*
+             * INITIAL HISTORY SCAN
+             *
+             * Load all existing messages first.
+             *
+             * Nothing that existed before this scan
+             * finishes will generate a notification.
+             */
+            if (!notificationHistoryLoaded) {
+
+                /*
+                 * Prevent starting multiple initial
+                 * scans simultaneously.
+                 */
+                if (notificationInitialScan)
+                    return;
+
+                notificationInitialScan = true;
+
+                var pending =
+                    friends.length;
+
+                if (pending == 0) {
+
+                    notificationHistoryLoaded = true;
+                    notificationInitialScan = false;
+
+                    return;
+                }
+
+                for (
+                    var i = 0;
+                    i < friends.length;
+                    i++
+                ) {
+
+                    (function (username) {
+
+                        var xhr = apiRequest(
+                            "GET",
+                            "/dm?user=" +
+                            encodeURIComponent(username),
+
+                            function (xhr) {
+
+                                xhr.onreadystatechange =
+                                    function () {
+
+                                        if (
+                                            xhr.readyState != 4
+                                        )
+                                            return;
+
+                                        /*
+                                         * Even if one friend's request
+                                         * fails, allow initialization
+                                         * to eventually finish.
+                                         */
+                                        if (
+                                            xhr.status == 200
+                                        ) {
+
+                                            var msgs = [];
+
+                                            try {
+
+                                                msgs =
+                                                    JSON.parse(
+                                                        xhr.responseText
+                                                    );
+
+                                            } catch (e) {
+
+                                                msgs = [];
+                                            }
+
+                                            /*
+                                             * Mark every message currently
+                                             * existing as already seen.
+                                             */
+                                            for (
+                                                var j = 0;
+                                                j < msgs.length;
+                                                j++
+                                            ) {
+
+                                                var msg =
+                                                    msgs[j];
+
+                                                var id =
+                                                    getDMMessageID(
+                                                        msg
+                                                    );
+
+                                                notifiedDMs[id] =
+                                                    true;
+                                            }
+                                        }
+
+                                        pending--;
+
+                                        if (
+                                            pending <= 0
+                                        ) {
+
+                                            notificationHistoryLoaded =
+                                                true;
+
+                                            notificationInitialScan =
+                                                false;
+                                        }
+                                    };
+                            }
+                        );
+
+                        xhr.send();
+
+                    })(friends[i]);
+                }
+
+                return;
+            }
+
+
+            /*
+             * NORMAL POLLING
+             *
+             * At this point every message that existed
+             * when we logged in has been marked as seen.
+             */
+            for (
+                var i = 0;
+                i < friends.length;
+                i++
+            ) {
+
+                (function (username) {
+
+                    var xhr = apiRequest(
+                        "GET",
+                        "/dm?user=" +
+                        encodeURIComponent(username),
+
+                        function (xhr) {
+
+                            xhr.onreadystatechange =
+                                function () {
+
+                                    if (
+                                        xhr.readyState != 4
+                                    )
+                                        return;
+
+                                    if (
+                                        xhr.status != 200
+                                    )
+                                        return;
+
+                                    var msgs;
+
+                                    try {
+
+                                        msgs =
+                                            JSON.parse(
+                                                xhr.responseText
+                                            );
+
+                                    } catch (e) {
+
+                                        return;
+                                    }
+
+                                    for (
+                                        var j = 0;
+                                        j < msgs.length;
+                                        j++
+                                    ) {
+
+                                        var msg =
+                                            msgs[j];
+
+                                        /*
+                                         * Don't notify about our
+                                         * own messages.
+                                         */
+                                        if (
+                                            msg.from ==
+                                            currentUser
+                                        ) {
+                                            continue;
+                                        }
+
+                                        var id =
+                                            getDMMessageID(
+                                                msg
+                                            );
+
+                                        /*
+                                         * Already seen?
+                                         */
+                                        if (
+                                            notifiedDMs[id]
+                                        ) {
+                                            continue;
+                                        }
+
+                                        /*
+                                         * New message.
+                                         */
+                                        notifyNewDM(msg);
+                                    }
+                                };
+                        }
+                    );
+
+                    xhr.send();
+
+                })(friends[i]);
+            }
+        }
+
+        function acceptFriend(username) {
+            var xhr = apiRequest("POST", "/friends/accept", function (xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.status == 200) refreshFriends();
+                    else alert("Could not accept this friend request.");
+                };
+            });
+            xhr.send(JSON.stringify({ user: username }));
+        }
+
+        function renderConvs() {
+
+            var html = "";
+
+            var pubActive =
+                (active.type == "public")
+                    ? " active"
+                    : "";
+
+            html +=
+                "<div class='conv" +
+                pubActive +
+                "' onclick=\"selectConv({type:'public'})\">" +
+                "Public Chat" +
+                "<span class='sub'>everyone</span>" +
+                "</div>";
+
+            for (var r = 0; r < friendRequests.length; r++) {
+                var requester = friendRequests[r].from;
+                html += "<div class='conv'>" + escapeHTML(requester) +
+                    "<span class='sub'><button onclick=\"acceptFriend('" + jsStr(requester) + "')\">Accept request</button></span></div>";
+            }
+
+            for (
+                var i = 0;
+                i < friends.length;
+                i++
+            ) {
+
+                var name = friends[i];
+
+                var isActive =
+                    (
+                        active.type == "dm" &&
+                        active.user == name
+                    )
+                        ? " active"
+                        : "";
+
+                html +=
+                    "<div class='conv" +
+                    isActive +
+                    "' onclick=\"selectConv({type:'dm',user:'" +
+                    jsStr(name) +
+                    "'})\">" +
+
+                    escapeHTML(name) +
+
+                    "<span class='sub'>" +
+                    "private message" +
+                    "</span>" +
+
+                    "</div>";
+            }
+
+            document.getElementById(
+                "convs"
+            ).innerHTML = html;
+        }
+
+
+        function selectConv(conv, silent) {
+
+            active = conv;
+
+            lastSig = "";
+
+            document.getElementById(
+                "messages"
+            ).innerHTML = "";
+
+            renderConvs();
+
+            setTitle();
+
+            document.getElementById(
+                "app"
+            ).className = "viewing";
+
+            refreshChat();
+
+            if (!silent) {
+
+                document.getElementById(
+                    "message"
+                ).focus();
+            }
+        }
+
+
+        function setTitle() {
+
+            var t = "Chatroom";
+
+            if (currentUser) {
+
+                t =
+                    (active.type == "dm")
+                        ? active.user
+                        : "Public Chat";
+            }
+
+            document.getElementById(
+                "title"
+            ).innerHTML =
+                escapeHTML(t);
+        }
+
+
+        /* ---------- sending ---------- */
+
+        function sendMessage() {
+
+            var msg =
+                trimMessage(
+                    document.getElementById(
+                        "message"
+                    ).value
+                );
+
+            if (msg == "")
+                return;
+
+
+            /* ---------- DM ---------- */
+
+            if (active.type == "dm") {
+
+                var xhr = apiRequest(
+                    "POST",
+                    "/dm/send",
+                    function (xhr) {
+
+                        xhr.setRequestHeader(
+                            "Content-Type",
+                            "application/json"
+                        );
+
+                        xhr.onreadystatechange =
+                            function () {
+
+                                if (
+                                    xhr.readyState != 4
+                                )
+                                    return;
+
+                                if (
+                                    xhr.status == 200
+                                ) {
+
+                                    document.getElementById(
+                                        "message"
+                                    ).value = "";
+
+                                    refreshChat();
+
+                                } else if (
+                                    xhr.status == 403
+                                ) {
+
+                                    alert(
+                                        "You can only message friends."
+                                    );
+                                }
+                            };
+                    }
+                );
+
+                /*
+                 * The server gets "from" from the
+                 * authenticated session.
+                 */
+                xhr.send(JSON.stringify({
+
+                    to: active.user,
+
+                    text: msg
+                }));
+
+                return;
+            }
+
+
+            /* ---------- PUBLIC CHAT ---------- */
+
+            var xhr2 = apiRequest(
+                "POST",
+                "/send",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status == 200
+                            ) {
+
+                                document.getElementById(
+                                    "message"
+                                ).value = "";
+
+                                refreshChat();
+                            }
+                        };
+                }
+            );
+
+            /*
+             * The new server gets the username from
+             * the session, so "name" isn't needed.
+             *
+             * NOTE: this means Anonymous mode is not
+             * implemented server-side yet.
+             */
+            xhr2.send(JSON.stringify({
+
+                text: msg,
+                anonymous: document.getElementById("anon").checked
+            }));
+        }
+
+
+        function trimMessage(text) {
+
+            if (text.length > 374)
+                text = text.substr(0, 374);
+
+            return text;
+        }
+
+
+        /* ---------- rendering ---------- */
+
+        function escapeHTML(s) {
+
+            s = "" + s;
+
+            s = s.replace(
+                /&/g,
+                "&amp;"
+            );
+
+            s = s.replace(
+                /</g,
+                "&lt;"
+            );
+
+            s = s.replace(
+                />/g,
+                "&gt;"
+            );
+
+            return s;
+        }
+        function loadChatProfile(username, callback) {
+
+            if (!username) {
+                if (callback)
+                    callback(null);
+
+                return;
+            }
+
+            /*
+             * Anonymous users use the default avatar.
+             * Do NOT request /profile for them.
+             */
+            if (
+                username.toLowerCase() == "anonymous" ||
+                username.toLowerCase() == "anon"
+            ) {
+
+                var anonymousProfile = {
+                    username: username,
+                    avatar: "/uploads/avatars/fluttershy.webp"
+                };
+
+                chatProfiles[username] =
+                    anonymousProfile;
+
+                if (callback)
+                    callback(anonymousProfile);
+
+                return;
+            }
+
+            /* Already cached */
+            if (chatProfiles[username]) {
+
+                if (callback)
+                    callback(chatProfiles[username]);
+
+                return;
+            }
+
+            var xhr = apiRequest(
+                "GET",
+                "/profile?user=" +
+                encodeURIComponent(username),
+
+                function (xhr) {
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status != 200
+                            ) {
+
+                                if (callback)
+                                    callback(null);
+
+                                return;
+                            }
+
+                            var profile;
+
+                            try {
+
+                                profile =
+                                    JSON.parse(
+                                        xhr.responseText
+                                    );
+
+                            } catch (e) {
+
+                                if (callback)
+                                    callback(null);
+
+                                return;
+                            }
+
+                            chatProfiles[username] =
+                                profile;
+
+                            if (callback)
+                                callback(profile);
+                        };
+                }
+            );
+
+            xhr.send();
+        }
+
+        function jsStr(s) {
+
+            s = "" + s;
+
+            s = s.replace(
+                /\\/g,
+                "\\\\"
+            );
+
+            s = s.replace(
+                /'/g,
+                "\\'"
+            );
+
+            return escapeHTML(s);
+        }
+
+
+
+        function bubbleHTML(
+            name,
+            text,
+            isMine,
+            showName
+        ) {
+
+            var side =
+                isMine
+                    ? "right"
+                    : "left";
+
+            var html =
+                "<div class='row " +
+                side +
+                "'>";
+
+            if (!isMine) {
+
+                var profile =
+                    chatProfiles[name];
+
+                var avatarURL = "";
+
+                if (
+                    profile &&
+                    profile.avatar
+                ) {
+
+                    avatarURL =
+                        API +
+                        profile.avatar;
+                }
+
+                /*
+                 * Use the actual profile picture.
+                 * If they don't have one, fall back
+                 * to the old dot.
+                 */
+                if (avatarURL) {
+
+                    html +=
+                        "<button " +
+                        "class='profileButton' " +
+                        "onclick=\"profilePictureClicked('" +
+                        jsStr(name) +
+                        "')\">" +
+
+                        "<img " +
+                        "src='" +
+                        escapeHTML(avatarURL) +
+                        "' " +
+                        "alt='' " +
+                        "class='chatAvatar'>" +
+
+                        "</button>";
+
+                } else {
+
+                    html +=
+                        "<button " +
+                        "class='profileButton' " +
+                        "onclick=\"profilePictureClicked('" +
+                        jsStr(name) +
+                        "')\">" +
+                        "●" +
+                        "</button>";
+                }
+            }
+
+            if (
+                !isMine &&
+                showName
+            ) {
+
+                html +=
+                    "<div class='name'>" +
+                    escapeHTML(name) +
+                    "</div>";
+            }
+
+            html +=
+                "<span class='bubble " +
+                side +
+                "'>" +
+                escapeHTML(text) +
+                "</span>";
+
+            html +=
+                "</div>";
+
+            return html;
+        }
+
+
+        /* Only redraw when content changed. */
+
+        function applyThread(rows) {
+
+            var box =
+                document.getElementById(
+                    "messages"
+                );
+
+            /*
+             * Make sure we have profiles for every
+             * person appearing in the conversation.
+             */
+            var missing = [];
+            var seen = {};
+
+            for (
+                var i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                var username =
+                    rows[i].name;
+
+                if (
+                    username &&
+                    !chatProfiles[username] &&
+                    !seen[username]
+                ) {
+
+                    missing.push(username);
+                    seen[username] = true;
+                }
+            }
+
+            /*
+             * If profiles are missing, load them first.
+             * Then redraw the chat.
+             */
+            if (missing.length > 0) {
+
+                var remaining =
+                    missing.length;
+
+                for (
+                    var j = 0;
+                    j < missing.length;
+                    j++
+                ) {
+
+                    (function (username) {
+
+                        loadChatProfile(
+                            username,
+                            function () {
+
+                                remaining--;
+
+                                if (
+                                    remaining == 0
+                                ) {
+
+                                    /*
+                                     * Force a redraw now that
+                                     * the profile pictures exist.
+                                     */
+                                    lastSig = "";
+
+                                    applyThread(
+                                        rows
+                                    );
+                                }
+                            }
+                        );
+
+                    })(missing[j]);
+                }
+
+                /*
+                 * Don't render the incomplete version yet.
+                 */
+                return;
+            }
+
+            var sig = "";
+            var html = "";
+
+            for (
+                var k = 0;
+                k < rows.length;
+                k++
+            ) {
+
+                var r =
+                    rows[k];
+
+                html +=
+                    bubbleHTML(
+                        r.name,
+                        r.text,
+                        r.mine,
+                        r.showName
+                    );
+
+                sig +=
+                    r.name +
+                    "\u0001" +
+                    r.text +
+                    "\u0002";
+            }
+
+            if (
+                sig ==
+                lastSig
+            )
+                return;
+
+            var stick =
+                (
+                    box.scrollHeight -
+                    box.scrollTop -
+                    box.clientHeight
+                ) < 40;
+
+            lastSig =
+                sig;
+
+            box.innerHTML =
+                html;
+
+            if (stick)
+                box.scrollTop =
+                    box.scrollHeight;
+        }
+
+
+        /* ---------- loading chat ---------- */
+
+        function refreshChat() {
+
+            /* ---------- DM ---------- */
+
+            if (active.type == "dm") {
+
+                var xhr = apiRequest(
+                    "GET",
+                    "/dm?user=" +
+                    encodeURIComponent(active.user),
+
+                    function (xhr) {
+
+                        xhr.onreadystatechange =
+                            function () {
+
+                                if (
+                                    xhr.readyState != 4
+                                )
+                                    return;
+
+                                if (
+                                    xhr.status != 200
+                                )
+                                    return;
+
+                                var msgs;
+
+                                try {
+
+                                    msgs =
+                                        JSON.parse(
+                                            xhr.responseText
+                                        );
+
+                                } catch (e) {
+
+                                    return;
+                                }
+
+                                var rows = [];
+
+                                for (
+                                    var i = 0;
+                                    i < msgs.length;
+                                    i++
+                                ) {
+
+                                    var dm =
+                                        msgs[i];
+
+                                    rows.push({
+
+                                        name:
+                                            dm.from,
+
+                                        text:
+                                            dm.text,
+
+                                        mine:
+                                            (
+                                                dm.from ==
+                                                currentUser
+                                            ),
+
+                                        showName: false
+                                    });
+                                }
+
+                                applyThread(rows);
+                            };
+                    }
+                );
+
+                xhr.send();
+
+                return;
+            }
+
+
+            /* ---------- PUBLIC CHAT ---------- */
+
+            var xhr2 = apiRequest(
+                "GET",
+                "/chat",
+                function (xhr) {
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status != 200
+                            )
+                                return;
+
+                            var chat;
+
+                            try {
+
+                                chat =
+                                    JSON.parse(
+                                        xhr.responseText
+                                    );
+
+                            } catch (e) {
+
+                                return;
+                            }
+
+                            var rows = [];
+
+                            for (
+                                var i = 0;
+                                i < chat.length;
+                                i++
+                            ) {
+
+                                rows.push({
+
+                                    name:
+                                        chat[i].name,
+
+                                    text:
+                                        chat[i].text,
+
+                                    mine:
+                                        (
+                                            chat[i].sender ==
+                                            currentUser
+                                        ),
+
+                                    showName: true
+                                });
+                            }
+
+                            applyThread(rows);
+                        };
+
+                }
+            );
+
+            xhr2.send();
+        }
+
+        /* ---------- polling ---------- */
+
+        setInterval(
+            function () {
+
+                if (
+                    document.getElementById(
+                        "chat"
+                    ).style.display != "none" &&
+                    currentUser
+                ) {
+
+                    refreshChat();
+                }
+
+            },
+            1500
+        );
+
+        setInterval(
+            function () {
+
+                if (
+                    currentUser
+                ) {
+
+                    checkDMNotifications();
+
+                }
+
+            },
+            2000
+        );
+
+        setInterval(
+            function () {
+
+                if (currentUser)
+                    refreshFriends();
+
+            },
+            5000
+        );
+
+
+        /* ---------- enter key ---------- */
+
+        document.getElementById(
+            "message"
+        ).onkeydown = function (e) {
+
+            e =
+                e ||
+                window.event;
+
+            if (e.keyCode == 13) {
+
+                sendMessage();
+
+                return false;
+            }
+        };
+
+        /* =========================================================
+           PROFILES
+           ========================================================= */
+
+        var viewedProfileUser = "";
+
+
+        function openProfile(username) {
+
+            viewedProfileUser = username;
+
+            var xhr = apiRequest(
+                "GET",
+                "/profile?user=" +
+                encodeURIComponent(username),
+                function (xhr) {
+
+                    xhr.onreadystatechange = function () {
+
+                        if (xhr.readyState != 4)
+                            return;
+
+                        if (xhr.status != 200) {
+                            alert("Could not load profile.");
+                            return;
+                        }
+
+                        var p;
+
+                        try {
+                            p = JSON.parse(
+                                xhr.responseText
+                            );
+                        } catch (e) {
+                            return;
+                        }
+
+                        document.getElementById(
+                            "profileDisplayName"
+                        ).innerHTML =
+                            escapeHTML(
+                                p.display_name ||
+                                p.username
+                            );
+
+                        document.getElementById(
+                            "profileUsername"
+                        ).innerHTML =
+                            "@" +
+                            escapeHTML(
+                                p.username
+                            );
+
+                        document.getElementById(
+                            "profilePronouns"
+                        ).innerHTML =
+                            escapeHTML(
+                                p.pronouns || ""
+                            );
+
+                        document.getElementById(
+                            "profileBio"
+                        ).innerHTML =
+                            p.bio || "";
+
+                        document.getElementById(
+                            "profileStatus"
+                        ).innerHTML =
+                            escapeHTML(
+                                p.status || "online"
+                            );
+
+                        var avatar =
+                            document.getElementById(
+                                "profileAvatar"
+                            );
+
+                        if (p.avatar) {
+
+                            avatar.src =
+                                API +
+                                p.avatar;
+
+                        } else {
+
+                            avatar.src = "";
+
+                        }
+
+                        var banner =
+                            document.getElementById(
+                                "profileBanner"
+                            );
+
+                        if (p.banner) {
+
+                            banner.style.backgroundImage =
+                                "url('" +
+                                API +
+                                p.banner +
+                                "')";
+
+                        } else {
+
+                            banner.style.backgroundImage =
+                                "none";
+
+                        }
+                        var profileCard =
+                            document.getElementById(
+                                "profileCard"
+                            );
+
+                        if (
+                            p.gradient &&
+                            p.color1 &&
+                            p.color2
+                        ) {
+
+                            profileCard.style.background =
+                                "linear-gradient(135deg," +
+                                p.color1 +
+                                "," +
+                                p.color2 +
+                                ")";
+
+                            var profileTextColor =
+                                getProfileTextColor(
+                                    p.color1,
+                                    p.color2
+                                );
+
+                            profileCard.style.color =
+                                profileTextColor;
+
+                            /*
+                            * Make headings and paragraphs inherit the
+                            * automatically selected color.
+                            */
+                            var profileElements =
+                                profileCard.querySelectorAll(
+                                    "h1, h2, h3, h4, p, span, div"
+                                );
+
+                            for (
+                                var i = 0;
+                                i < profileElements.length;
+                                i++
+                            ) {
+                                profileElements[i].style.color =
+                                    profileTextColor;
+                            }
+
+                        } else {
+
+                            profileCard.style.background = "";
+
+                            profileCard.style.color = "#000";
+
+                            var profileElements =
+                                profileCard.querySelectorAll(
+                                    "h1, h2, h3, h4, p, span, div"
+                                );
+
+                            for (
+                                var i = 0;
+                                i < profileElements.length;
+                                i++
+                            ) {
+                                profileElements[i].style.color =
+                                    "";
+                            }
+                        }
+
+                        document.getElementById(
+                            "profileCard"
+                        ).style.display = "block";
+                    };
+                }
+            );
+
+            xhr.send();
+        }
+
+
+        function closeProfile() {
+
+            document.getElementById(
+                "profileCard"
+            ).style.display = "none";
+        }
+
+
+        function openMyProfile() {
+
+            openProfile(
+                currentUser
+            );
+        }
+
+        function getProfileTextColor(color1, color2) {
+            function hexToRGB(hex) {
+                hex = String(hex || "").replace("#", "");
+
+                if (hex.length === 3) {
+                    hex =
+                        hex.charAt(0) + hex.charAt(0) +
+                        hex.charAt(1) + hex.charAt(1) +
+                        hex.charAt(2) + hex.charAt(2);
+                }
+
+                if (!/^[0-9a-fA-F]{6}$/.test(hex)) {
+                    return {
+                        r: 255,
+                        g: 255,
+                        b: 255
+                    };
+                }
+
+                return {
+                    r: parseInt(hex.substr(0, 2), 16),
+                    g: parseInt(hex.substr(2, 2), 16),
+                    b: parseInt(hex.substr(4, 2), 16)
+                };
+            }
+
+            function luminance(rgb) {
+                return (
+                    0.299 * rgb.r +
+                    0.587 * rgb.g +
+                    0.114 * rgb.b
+                );
+            }
+
+            var c1 = hexToRGB(color1);
+            var c2 = hexToRGB(color2);
+
+            var brightness =
+                (luminance(c1) + luminance(c2)) / 2;
+
+            /*
+             * Dark gradient = white text
+             * Light gradient = black text
+             */
+            if (brightness < 140) {
+                return "#fff";
+            }
+
+            return "#000";
+        }
+
+        function messageProfileUser() {
+
+            if (!viewedProfileUser)
+                return;
+
+            if (
+                viewedProfileUser ==
+                currentUser
+            )
+                return;
+
+            closeProfile();
+
+            selectConv({
+                type: "dm",
+                user: viewedProfileUser
+            });
+        }
+
+
+        function friendProfileUser() {
+
+            if (!viewedProfileUser)
+                return;
+
+            var xhr = apiRequest(
+                "POST",
+                "/friends/add",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status == 200
+                            ) {
+
+                                alert(
+                                    "Friend request sent."
+                                );
+
+                                refreshFriends();
+
+                            } else {
+
+                                alert(
+                                    "Could not add friend."
+                                );
+                            }
+                        };
+                }
+            );
+
+            xhr.send(
+                JSON.stringify({
+                    friend:
+                        viewedProfileUser
+                })
+            );
+        }
+
+
+        function blockProfileUser() {
+
+            if (!viewedProfileUser)
+                return;
+
+            if (
+                !confirm(
+                    "Block " +
+                    viewedProfileUser +
+                    "?"
+                )
+            )
+                return;
+
+            var xhr = apiRequest(
+                "POST",
+                "/block",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status == 200
+                            ) {
+
+                                closeProfile();
+
+                                refreshFriends();
+
+                            }
+                        };
+                }
+            );
+
+            xhr.send(
+                JSON.stringify({
+                    user:
+                        viewedProfileUser
+                })
+            );
+        }
+
+
+        /* =========================================================
+           SETTINGS
+           ========================================================= */
+
+        function openSettings() {
+
+            var xhr = apiRequest(
+                "GET",
+                "/me",
+                function (xhr) {
+
+                    xhr.onreadystatechange = function () {
+
+                        if (
+                            xhr.readyState != 4
+                        )
+                            return;
+
+                        if (
+                            xhr.status != 200
+                        )
+                            return;
+
+                        var p;
+
+                        try {
+
+                            p = JSON.parse(
+                                xhr.responseText
+                            );
+
+                        } catch (e) {
+
+                            return;
+                        }
+
+                        document.getElementById(
+                            "settingDisplayName"
+                        ).value =
+                            p.display_name || "";
+
+                        document.getElementById(
+                            "settingPronouns"
+                        ).value =
+                            p.pronouns || "";
+
+                        document.getElementById(
+                            "settingBio"
+                        ).value =
+                            p.bio || "";
+
+                        document.getElementById(
+                            "settingColor1"
+                        ).value =
+                            p.color1 || "";
+
+                        document.getElementById(
+                            "settingColor2"
+                        ).value =
+                            p.color2 || "";
+
+                        document.getElementById(
+                            "settingGradient"
+                        ).checked =
+                            !!p.gradient;
+
+                        document.getElementById(
+                            "settingStatus"
+                        ).value =
+                            p.status || "online";
+
+                        var savedTheme = "light-skeuo";
+
+                        try {
+                            savedTheme =
+                                localStorage.getItem(THEME_KEY) ||
+                                "light-skeuo";
+                        } catch (e) { }
+
+                        document.getElementById(
+                            "settingTheme"
+                        ).value =
+                            savedTheme;
+
+                        document.getElementById(
+                            "settingsPanel"
+                        ).style.display =
+                            "block";
+                    };
+                }
+            );
+
+            xhr.send();
+        }
+
+
+        function closeSettings() {
+
+            document.getElementById(
+                "settingsPanel"
+            ).style.display = "none";
+        }
+
+
+        function saveSettings() {
+
+            var data = {
+
+                display_name:
+                    document.getElementById(
+                        "settingDisplayName"
+                    ).value,
+
+                pronouns:
+                    document.getElementById(
+                        "settingPronouns"
+                    ).value,
+
+                bio:
+                    document.getElementById(
+                        "settingBio"
+                    ).value,
+
+                color1:
+                    document.getElementById(
+                        "settingColor1"
+                    ).value,
+
+                color2:
+                    document.getElementById(
+                        "settingColor2"
+                    ).value,
+
+                gradient:
+                    document.getElementById(
+                        "settingGradient"
+                    ).checked,
+
+                status:
+                    document.getElementById(
+                        "settingStatus"
+                    ).value,
+
+                theme:
+                    document.getElementById(
+                        "settingTheme"
+                    ).value
+            };
+
+            var xhr = apiRequest(
+                "POST",
+                "/profile/save",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status == 200
+                            ) {
+
+                                closeSettings();
+
+                                applyTheme(
+                                    data.theme
+                                );
+
+                                alert(
+                                    "Settings saved."
+                                );
+
+                            } else {
+
+                                alert(
+                                    "Could not save settings."
+                                );
+                            }
+                        };
+                }
+            );
+
+            xhr.send(
+                JSON.stringify(data)
+            );
+        }
+        function uploadProfileImage(kind) {
+
+            var input;
+
+            var status;
+
+            if (kind == "avatar") {
+
+                input =
+                    document.getElementById(
+                        "settingAvatarFile"
+                    );
+
+                status =
+                    document.getElementById(
+                        "avatarUploadStatus"
+                    );
+
+            } else {
+
+                input =
+                    document.getElementById(
+                        "settingBannerFile"
+                    );
+
+                status =
+                    document.getElementById(
+                        "bannerUploadStatus"
+                    );
+            }
+
+            if (!input || !input.files || !input.files.length) {
+
+                alert(
+                    "Please choose an image first."
+                );
+
+                return;
+            }
+
+            var file = input.files[0];
+
+            if (
+                file.size >
+                100 * 1024 * 1024
+            ) {
+
+                alert(
+                    "Images must be 100 MB or smaller."
+                );
+
+                return;
+            }
+
+            status.innerHTML =
+                "Uploading...";
+
+            var form =
+                new FormData();
+
+            form.append(
+                "kind",
+                kind
+            );
+
+            form.append(
+                "file",
+                file
+            );
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open(
+                "POST",
+                API + "/upload",
+                true
+            );
+
+            xhr.withCredentials = true;
+
+            xhr.onreadystatechange =
+                function () {
+
+                    if (
+                        xhr.readyState != 4
+                    )
+                        return;
+
+                    var result = null;
+
+                    try {
+
+                        result =
+                            JSON.parse(
+                                xhr.responseText
+                            );
+
+                    } catch (e) { }
+
+                    if (
+                        xhr.status != 200
+                    ) {
+
+                        status.innerHTML =
+                            result &&
+                                result.error
+                                ? escapeHTML(
+                                    result.error
+                                )
+                                : "Upload failed.";
+
+                        return;
+                    }
+
+                    status.innerHTML =
+                        "Uploaded successfully.";
+
+                    input.value = "";
+
+                    /*
+                     * Refresh the currently displayed
+                     * profile if it is open.
+                     */
+
+                    if (
+                        viewedProfileUser ==
+                        currentUser
+                    ) {
+
+                        openProfile(
+                            currentUser
+                        );
+                    }
+                };
+
+            xhr.onerror =
+                function () {
+
+                    status.innerHTML =
+                        "Upload failed.";
+                };
+
+            xhr.send(form);
+        }
+
+
+        /* =========================================================
+            TYPING
+            ========================================================= */
+
+        var lastTypingSent = 0;
+
+        function sendTyping() {
+
+            if (!currentUser)
+                return;
+
+            if (active.type != "dm")
+                return;
+
+            var now =
+                new Date().getTime();
+
+            /*
+            * Don't send typing requests more than
+            * once per second.
+            */
+            if (
+                now - lastTypingSent <
+                1000
+            )
+                return;
+
+            lastTypingSent = now;
+
+            var xhr = apiRequest(
+                "POST",
+                "/typing",
+                function (xhr) {
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status != 200
+                            ) {
+
+                                return;
+                            }
+
+                        };
+                }
+            );
+
+            xhr.send(
+                JSON.stringify({
+                    conversation:
+                        active.user
+                })
+            );
+        }
+
+
+        function checkTyping() {
+
+            var indicator =
+                document.getElementById(
+                    "typingIndicator"
+                );
+
+            if (!indicator)
+                return;
+
+            /*
+            * Clear the indicator when we're not
+            * currently looking at a DM.
+            */
+            if (
+                !currentUser ||
+                active.type != "dm"
+            ) {
+
+                indicator.innerHTML = "";
+
+                return;
+            }
+
+            var xhr = apiRequest(
+                "GET",
+                "/typing?user=" +
+                encodeURIComponent(
+                    active.user
+                ),
+
+                function (xhr) {
+
+                    xhr.onreadystatechange =
+                        function () {
+
+                            if (
+                                xhr.readyState != 4
+                            )
+                                return;
+
+                            if (
+                                xhr.status != 200
+                            ) {
+
+                                indicator.innerHTML = "";
+
+                                return;
+                            }
+
+                            var result;
+
+                            try {
+
+                                result =
+                                    JSON.parse(
+                                        xhr.responseText
+                                    );
+
+                            } catch (e) {
+
+                                indicator.innerHTML = "";
+
+                                return;
+                            }
+
+                            if (
+                                result.typing
+                            ) {
+
+                                indicator.innerHTML =
+                                    escapeHTML(
+                                        active.user
+                                    ) +
+                                    " is typing...";
+
+                            } else {
+
+                                indicator.innerHTML =
+                                    "";
+                            }
+                        };
+                }
+            );
+
+            xhr.send();
+        }
+
+
+        /*
+        * Send typing notifications whenever
+        * the user types in the message box.
+        */
+        document.getElementById(
+            "message"
+        ).onkeyup = function () {
+
+            sendTyping();
+
+        };
+
+
+        /*
+        * Also catch paste, mobile input,
+        * autofill, etc.
+        */
+        document.getElementById(
+            "message"
+        ).oninput = function () {
+
+            sendTyping();
+
+        };
+
+
+        /*
+        * Check the other user's typing state
+        * every 1.5 seconds.
+        */
+        setInterval(
+            checkTyping,
+            1500
+        );
+
+
+        /* =========================================================
+           CLOSE DM
+           ========================================================= */
+
+        function closeDM() {
+
+            if (
+                active.type != "dm"
+            )
+                return;
+
+            if (
+                !confirm(
+                    "Close this conversation?"
+                )
+            )
+                return;
+
+            active = {
+                type: "public"
+            };
+
+            lastSig = "";
+
+            renderConvs();
+
+            setTitle();
+
+            refreshChat();
+        }
+
+
+        /* =========================================================
+           PROFILE CLICKING
+           ========================================================= */
+
+        function profilePictureClicked(
+            username
+        ) {
+
+            openProfile(
+                username
+            );
+        }
+
+        /* Restore a valid server session so returning users see their chats. */
+        function restoreSession() {
+            if (!window.XMLHttpRequest) {
+                document.getElementById("login").innerHTML =
+                    "<h2>Browser not supported</h2><p>This browser needs XMLHttpRequest support. Very old devices may also need a local HTTP connection because they cannot use modern HTTPS.</p>";
+                return;
+            }
+
+            var xhr = apiRequest("GET", "/me", function (xhr) {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.status != 200) {
+                        showLogin();
+                        return;
+                    }
+
+                    var profile;
+                    try { profile = JSON.parse(xhr.responseText); }
+                    catch (e) { showLogin(); return; }
+
+                    currentUser = profile.username;
+
+                    notifiedDMs = {};
+                    notificationHistoryLoaded = false;
+                    notificationInitialScan = false;
+
+                    active = {
+                        type: "public"
+                    };
+
+                    lastSig = "";
+
+                    document.getElementById("login").style.display = "none";
+                    document.getElementById("register").style.display = "none";
+                    document.getElementById("actions").style.display = "inline";
+                    document.getElementById("chat").style.display = "block";
+
+
+                    /* Restore the browser's saved theme. */
+                    var savedTheme = "light-skeuo";
+
+                    try {
+                        savedTheme =
+                            localStorage.getItem(THEME_KEY) ||
+                            "light-skeuo";
+                    } catch (e) { }
+
+                    applyTheme(
+                        savedTheme,
+                        true
+                    );
+
+
+                    refreshFriends();
+
+                    selectConv(
+                        { type: "public" },
+                        true
+                    );
+                };
+            });
+            xhr.send();
+        }
+
+        var quickCSSEditor = null;
+        var quickCSSStyle = null;
+
+
+        /* ---------------------------------------------------------
+        CREATE STYLE ELEMENT
+        --------------------------------------------------------- */
+
+        function createQuickCSSStyle() {
+
+            if (quickCSSStyle) {
+                return;
+            }
+
+            quickCSSStyle = document.getElementById("quickCSSInjected");
+
+            if (!quickCSSStyle) {
+
+                quickCSSStyle = document.createElement("style");
+
+                quickCSSStyle.id = "quickCSSInjected";
+
+                document.head.appendChild(quickCSSStyle);
+            }
+        }
+
+
+        /* ---------------------------------------------------------
+        LOAD QUICKCSS
+        --------------------------------------------------------- */
+
+        function getQuickCSS() {
+
+            try {
+                return localStorage.getItem("quickCSS") || "";
+            } catch (e) {
+                return "";
+            }
+        }
+
+
+        /* ---------------------------------------------------------
+        SAVE QUICKCSS
+        --------------------------------------------------------- */
+
+        function saveQuickCSS(css) {
+
+            try {
+                localStorage.setItem("quickCSS", css);
+            } catch (e) {
+                console.log("Could not save QuickCSS:", e);
+            }
+        }
+
+
+        /* ---------------------------------------------------------
+        APPLY QUICKCSS
+        --------------------------------------------------------- */
+
+        function applyQuickCSS(css) {
+
+            createQuickCSSStyle();
+
+            quickCSSStyle.textContent = css || "";
+        }
+
+
+        /* ---------------------------------------------------------
+        OPEN EDITOR
+        --------------------------------------------------------- */
+
+        function openQuickCSS() {
+
+            var windowEl =
+                document.getElementById("quickCSSWindow");
+
+            windowEl.className = "open";
+
+            if (quickCSSEditor) {
+
+                quickCSSEditor.layout();
+
+                quickCSSEditor.focus();
+
+                return;
+            }
+
+            require.config({
+                paths: {
+                    vs:
+                        "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs"
+                }
+            });
+
+            require(
+                ["vs/editor/editor.main"],
+                function() {
+
+                    quickCSSEditor =
+                        monaco.editor.create(
+                            document.getElementById(
+                                "quickCSSEditor"
+                            ),
+                            {
+
+                                value: getQuickCSS(),
+
+                                language: "css",
+
+                                theme: "vs-dark",
+
+                                automaticLayout: true,
+
+                                minimap: {
+                                    enabled: true
+                                },
+
+                                wordWrap: "on",
+
+                                fontSize: 13,
+
+                                tabSize: 4,
+
+                                insertSpaces: true,
+
+                                formatOnPaste: true,
+
+                                formatOnType: true,
+
+                                suggestOnTriggerCharacters: true,
+
+                                scrollBeyondLastLine: false
+
+                            }
+                        );
+
+
+                    /* -------------------------------------------------
+                    APPLY CHANGES IMMEDIATELY
+                    ------------------------------------------------- */
+
+                    quickCSSEditor.onDidChangeModelContent(
+                        function() {
+
+                            var css =
+                                quickCSSEditor
+                                    .getValue();
+
+                            saveQuickCSS(css);
+
+                            applyQuickCSS(css);
+
+                        }
+                    );
+
+                    applyQuickCSS(
+                        quickCSSEditor.getValue()
+                    );
+
+                    quickCSSEditor.focus();
+                }
+            );
+        }
+
+
+        /* ---------------------------------------------------------
+        CLOSE EDITOR
+        --------------------------------------------------------- */
+
+        function closeQuickCSS() {
+
+            var windowEl =
+                document.getElementById("quickCSSWindow");
+
+            windowEl.className = "";
+
+            if (quickCSSEditor) {
+                quickCSSEditor.layout();
+            }
+        }
+
+
+        /* ---------------------------------------------------------
+        LOAD QUICKCSS ON PAGE START
+        --------------------------------------------------------- */
+
+        function initializeQuickCSS() {
+
+            createQuickCSSStyle();
+
+            applyQuickCSS(
+                getQuickCSS()
+            );
+        }
+
+
+        if (document.readyState === "loading") {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                initializeQuickCSS
+            );
+
+        } else {
+
+            initializeQuickCSS();
+
+        }
+
+        var savedTheme = null;
+
+        try {
+            savedTheme = localStorage.getItem(THEME_KEY);
+        } catch (e) { }
+
+        if (!savedTheme) {
+            savedTheme = "light-skeuo";
+        }
+
+        applyTheme(savedTheme, true);
+
+        
+
+        restoreSession();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
+</body>
+</html>
