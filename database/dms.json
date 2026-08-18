@@ -1,0 +1,33 @@
+{
+    {
+  "lunaluvzyuri_root": [
+    {
+      "from": "root",
+      "to": "lunaluvzyuri",
+      "text": ": )"
+    },
+    {
+      "from": "lunaluvzyuri",
+      "to": "root",
+      "text": "hi"
+    },
+    {
+      "from": "lunaluvzyuri",
+      "to": "root",
+      "text": "hi"
+    },
+    {
+      "from": "lunaluvzyuri",
+      "to": "root",
+      "text": "hiii"
+    }
+  ],
+  "Zoeyluvzyuri_lunaluvzyuri": [
+    {
+      "from": "lunaluvzyuri",
+      "to": "Zoeyluvzyuri",
+      "text": "i love you <3"
+    }
+  ]
+}
+}
